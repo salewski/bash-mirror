@@ -5,7 +5,7 @@
 .\"	Case Western Reserve University
 .\"	chet.ramey@case.edu
 .\"
-.\"	Last Change: Wed Jan 14 15:46:08 EST 2026
+.\"	Last Change: Tue Mar  3 10:52:34 EST 2026
 .\"
 .\" For bash_builtins, strip all but "SHELL BUILTIN COMMANDS" section
 .\" For rbash, strip all but "RESTRICTED SHELL" section
@@ -22,7 +22,7 @@
 .ds zX \" empty
 .if \n(zZ=1 .ig zZ
 .if \n(zY=1 .ig zY
-.TH BASH 1 "2026 January 14" "GNU Bash 5.3"
+.TH BASH 1 "2026 March 3" "GNU Bash 5.3"
 .\"
 .ie \n(.g \{\
 .ds ' \(aq
@@ -3725,8 +3725,9 @@ introduce indirection.
 In each of the cases below, \fIword\fP is subject to tilde expansion,
 parameter expansion, command substitution, and arithmetic expansion.
 .PP
-When not performing substring expansion, using the forms documented below
-(e.g., \fB:-\fP),
+When performing the first four expansions documented below
+(\fB:-\fP, \fB:=\fP, \fB:?\fP, and \fB:+\fP),
+including the colon,
 \fBbash\fP tests for a parameter that is unset or null.
 Omitting the colon tests only for a parameter that is unset.
 .PP
@@ -3734,7 +3735,9 @@ Omitting the colon tests only for a parameter that is unset.
 ${\fIparameter\fP\fB:\-\fP\fIword\fP}
 \fBUse Default Values\fP.  If
 .I parameter
-is unset or null, the expansion of
+is unset or null,
+or unset if the colon is not present,
+the expansion of
 .I word
 is substituted.
 Otherwise, the value of
@@ -3745,7 +3748,9 @@ ${\fIparameter\fP\fB:=\fP\fIword\fP}
 \fBAssign Default Values\fP.
 If
 .I parameter
-is unset or null, the expansion of
+is unset or null,
+or unset if the colon is not present,
+the expansion of
 .I word
 is assigned to
 .IR parameter ,
@@ -3758,7 +3763,9 @@ ${\fIparameter\fP\fB:?\fP\fIword\fP}
 \fBDisplay Error if Null or Unset\fP.
 If
 .I parameter
-is null or unset, the shell writes
+is unset or null,
+or unset if the colon is not present,
+the shell writes
 the expansion of \fIword\fP (or a message to that effect
 if
 .I word
@@ -3772,7 +3779,9 @@ ${\fIparameter\fP\fB:+\fP\fIword\fP}
 \fBUse Alternate Value\fP.
 If
 .I parameter
-is null or unset, nothing is substituted, otherwise the expansion of
+is unset or null,
+or unset if the colon is not present,
+nothing is substituted, otherwise the expansion of
 .I word
 is substituted.
 The value of \fIparameter\fP is not used.

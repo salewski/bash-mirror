@@ -652,7 +652,7 @@ initialize_shell_variables (char **env, int privmode)
   /* Set history variables to defaults, and then do whatever we would
      do if the variable had just been set.  Do this only in the case
      that we are remembering commands on the history list. */
-  if (remember_on_history)
+  if (enable_history_list)
     {
       name = bash_default_histfile ();
 
@@ -677,7 +677,7 @@ initialize_shell_variables (char **env, int privmode)
     }
 
 #if defined (HISTORY)
-  if (interactive_shell && remember_on_history)
+  if (interactive_shell && enable_history_list)
     {
       sv_history_control ("HISTCONTROL");
       sv_histignore ("HISTIGNORE");

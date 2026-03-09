@@ -11776,7 +11776,7 @@ lib/sh/strtrans.c
 builtins/read.def
 	- read_builtin: make sure i is >= 0 after a timeout longjmp before
 	  trying to terminate input_string
-	  From a report from Duncan Roe <duncan_roe@optusnet.com.au>
+	  From a report from Duncan Roe <bduncan_roe@optusnet.com.au>
 
 jobs.c,jobs.h
 	- wait_for_background_pids: now takes a new first argument, WFLAGS.
@@ -12755,5 +12755,34 @@ execute_cmd.c
 	  if the redirections complete without errors, and defer environment
 	  creation until after calling expand_assignment_statements()
 
+				    3/5
+				    ---
+subst.c
+	- skip_to_histexp: fix typo in change from 2/12 that resulted in
+	  incorrect precedence for tests
+	  Report and patch from Grisha Levit <grishalevit@gmail.com>
 
+				    3/6
+				    ---
+variables.c
+	- initialize_shell_variables: use enable_history_list instead of
+	  remember_on_history to determine whether to initialize the history
+	  variables for consistency, though they should have the same value
+	  at this point
 
+shell.c
+	- exit_shell: use enable_history_list instead of remember_on_history
+	  to determine whether or not to save the history
+
+sig.c
+	- termsig_handler: save the history if either remember_on_history or
+	  enable_history_list is set (though only the latter should be
+	  necessary)
+	  Fixes problem with SIGHUP during $PROMPT_COMMAND evaluation
+	  reported in https://savannah.gnu.org/bugs/index.php?68128
+
+				    3/9
+				    ---
+builtins/psize.c
+	- sigpipe: work around cygwin SIGPIPE delivery bug
+	  Report and fix from Duncan Roe <bduncan_roe@optusnet.com.au>

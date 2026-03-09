@@ -1,6 +1,6 @@
 /* psize.c - Find pipe size. */
 
-/* Copyright (C) 1987, 1991, 2022 Free Software Foundation, Inc.
+/* Copyright (C) 1987, 1991, 2022, 2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -50,7 +50,11 @@ int nw;
 sighandler
 sigpipe (int sig)
 {
+#if defined (__CYGWIN__)
+  fprintf (stderr, "%d\n", nw - 128);
+#else
   fprintf (stderr, "%d\n", nw);
+#endif
   exit (0);
 }
 

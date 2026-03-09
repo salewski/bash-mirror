@@ -2306,8 +2306,10 @@ introduce indirection.
 In each of the cases below, @var{word} is subject to tilde expansion,
 parameter expansion, command substitution, and arithmetic expansion.
 
-When not performing substring expansion, using the forms described
-below (e.g., @samp{:@minus{}}), Bash tests for a parameter that is unset or null.
+When performing the first four expansions documented below
+(@samp{:-}, @samp{:=}, @samp{:?}, and @samp{:+}),
+including the colon,
+Bash tests for a parameter that is unset or null.
 Omitting the colon results in a test only for a parameter that is unset.
 Put another way, if the colon is included,
 the operator tests for both @var{parameter}'s existence and that its value
@@ -2316,7 +2318,10 @@ is not null; if the colon is omitted, the operator tests only for existence.
 @table @code
 
 @item $@{@var{parameter}:@minus{}@var{word}@}
-If @var{parameter} is unset or null, the expansion of
+If @var{parameter}
+is unset or null,
+or unset if the colon is not present,
+the expansion of
 @var{word} is substituted.
 Otherwise, the value of @var{parameter} is substituted.
 
@@ -2337,7 +2342,10 @@ unset-or-null
 @end example
 
 @item $@{@var{parameter}:=@var{word}@}
-If @var{parameter} is unset or null, the expansion of @var{word}
+If @var{parameter}
+is unset or null,
+or unset if the colon is not present,
+the expansion of @var{word}
 is assigned to @var{parameter},
 and the result of the expansion
 is the final value of @var{parameter}.
@@ -2365,7 +2373,9 @@ DEFAULT
 
 @item $@{@var{parameter}:?@var{word}@}
 If @var{parameter}
-is null or unset, the shell writes
+is unset or null,
+or unset if the colon is not present,
+the shell writes
 the expansion of @var{word} (or a message
 to that effect if @var{word}
 is not present) to the standard error and, if it
@@ -2392,7 +2402,10 @@ $ echo $@{var:?var is unset or null@}
 
 @item $@{@var{parameter}:+@var{word}@}
 If @var{parameter}
-is null or unset, nothing is substituted, otherwise the expansion of
+is unset or null,
+or unset if the colon is not present,
+nothing is substituted,
+otherwise the expansion of
 @var{word} is substituted.
 The value of @var{parameter} is not used.
 
@@ -8569,7 +8582,7 @@ This means you can use @var{x},
 where @var{x} is a shell variable name, in an arithmetic expression,
 and the shell will evaluate its value as an expression and use the
 result.
-A shell variable that is null or unset evaluates to 0 when referenced
+A shell variable that is unset or null evaluates to 0 when referenced
 by name in an expression.
 
 The value of a variable is evaluated as an arithmetic expression

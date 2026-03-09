@@ -2505,8 +2505,7 @@ skip_to_histexp (const char *string, int start, const char *delims, int flags)
 	  continue;
 	}
       else if (histexp_comsub && c == 'c' &&
-	      (i == 0) || shellbreak (string[i-1]) &&	/* incomplete reserved word eligibility test */
-	      (i <= slen - 4) &&
+	      (i == 0 || shellbreak (string[i-1])) &&	/* incomplete reserved word eligibility test */
 	      string[i+1] == 'a' && string[i+2] == 's' && string[i+3] == 'e' &&
 	      (shellblank (string[i+4]) || string[i+4] == '\0'))
 	{
@@ -2516,8 +2515,7 @@ skip_to_histexp (const char *string, int start, const char *delims, int flags)
 	  continue;
 	}
       else if (histexp_comsub && c == 'e' &&
-	      (i == 0) || shellbreak (string[i-1]) &&	/* incomplete reserved word eligibility test */
-	      (i <= slen - 4) &&
+	      (i == 0 || shellbreak (string[i-1])) &&	/* incomplete reserved word eligibility test */
 	      string[i+1] == 's' && string[i+2] == 'a' && string[i+3] == 'c' &&
 	      (shellbreak (string[i+4]) || string[i+4] == '\0'))
 	{

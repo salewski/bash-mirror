@@ -1927,34 +1927,36 @@ EEXXPPAANNSSIIOONN
        In each of the cases below, _w_o_r_d is subject to tilde expansion, parame-
        ter expansion, command substitution, and arithmetic expansion.
 
-       When not performing substring expansion, using the forms documented be-
-       low  (e.g.,  ::--),  bbaasshh  tests  for  a parameter that is unset or null.
-       Omitting the colon tests only for a parameter that is unset.
+       When performing the first four expansions documented below (::--, ::==, ::??,
+       and  ::++), including the colon, bbaasshh tests for a parameter that is unset
+       or null.  Omitting the colon tests only for a parameter that is unset.
 
        ${_p_a_r_a_m_e_t_e_r::--_w_o_r_d}
-              UUssee DDeeffaauulltt VVaalluueess.  If _p_a_r_a_m_e_t_e_r is unset or null,  the  expan-
-              sion  of _w_o_r_d is substituted.  Otherwise, the value of _p_a_r_a_m_e_t_e_r
-              is substituted.
+              UUssee DDeeffaauulltt VVaalluueess.  If _p_a_r_a_m_e_t_e_r is unset or null, or unset  if
+              the  colon is not present, the expansion of _w_o_r_d is substituted.
+              Otherwise, the value of _p_a_r_a_m_e_t_e_r is substituted.
 
        ${_p_a_r_a_m_e_t_e_r::==_w_o_r_d}
-              AAssssiiggnn DDeeffaauulltt VVaalluueess.  If _p_a_r_a_m_e_t_e_r is unset or null,  the  ex-
-              pansion  of  _w_o_r_d is assigned to _p_a_r_a_m_e_t_e_r, and the expansion is
-              the final value of _p_a_r_a_m_e_t_e_r.  Positional parameters and special
-              parameters may not be assigned in this way.
+              AAssssiiggnn DDeeffaauulltt VVaalluueess.  If _p_a_r_a_m_e_t_e_r is unset or null, or  unset
+              if  the  colon is not present, the expansion of _w_o_r_d is assigned
+              to _p_a_r_a_m_e_t_e_r, and the expansion is the final value of _p_a_r_a_m_e_t_e_r.
+              Positional parameters and special parameters may not be assigned
+              in this way.
 
        ${_p_a_r_a_m_e_t_e_r::??_w_o_r_d}
-              DDiissppllaayy EErrrroorr iiff NNuullll oorr UUnnsseett.  If _p_a_r_a_m_e_t_e_r is null or  unset,
-              the shell writes the expansion of _w_o_r_d (or a message to that ef-
-              fect if _w_o_r_d is not present) to the standard error and, if it is
-              not  interactive,  exits with a non-zero status.  An interactive
-              shell does not exit, but does not execute the command associated
-              with the expansion.  Otherwise, the value of _p_a_r_a_m_e_t_e_r  is  sub-
-              stituted.
+              DDiissppllaayy EErrrroorr iiff NNuullll oorr UUnnsseett.  If _p_a_r_a_m_e_t_e_r is unset or  null,
+              or  unset  if the colon is not present, the shell writes the ex-
+              pansion of _w_o_r_d (or a message to that  effect  if  _w_o_r_d  is  not
+              present)  to  the  standard error and, if it is not interactive,
+              exits with a non-zero status.  An  interactive  shell  does  not
+              exit,  but  does not execute the command associated with the ex-
+              pansion.  Otherwise, the value of _p_a_r_a_m_e_t_e_r is substituted.
 
        ${_p_a_r_a_m_e_t_e_r::++_w_o_r_d}
-              UUssee  AAlltteerrnnaattee VVaalluuee.  If _p_a_r_a_m_e_t_e_r is null or unset, nothing is
-              substituted, otherwise the expansion  of  _w_o_r_d  is  substituted.
-              The value of _p_a_r_a_m_e_t_e_r is not used.
+              UUssee AAlltteerrnnaattee VVaalluuee.  If _p_a_r_a_m_e_t_e_r is unset or null, or unset if
+              the colon is not present, nothing is substituted, otherwise  the
+              expansion of _w_o_r_d is substituted.  The value of _p_a_r_a_m_e_t_e_r is not
+              used.
 
        ${_p_a_r_a_m_e_t_e_r::_o_f_f_s_e_t}
        ${_p_a_r_a_m_e_t_e_r::_o_f_f_s_e_t::_l_e_n_g_t_h}
@@ -7618,4 +7620,4 @@ BBUUGGSS
 
        Array variables may not (yet) be exported.
 
-GNU Bash 5.3                    2026 January 14                        _B_A_S_H(1)
+GNU Bash 5.3                     2026 March 3                          _B_A_S_H(1)

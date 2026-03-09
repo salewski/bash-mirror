@@ -1005,7 +1005,7 @@ exit_shell (int s)
 #endif /* PROCESS_SUBSTITUTION */
 
 #if defined (HISTORY)
-  if (remember_on_history)
+  if (enable_history_list)
     maybe_save_shell_history ();
 #endif /* HISTORY */
 
