@@ -907,6 +907,10 @@ The array variable
 .SM
 .B BASH_REMATCH
 records which parts of the string matched the pattern.
+.B Bash
+unsets
+.B BASH_REMATCH
+before attempting the match, so if there is no match, it remains unset.
 The element of
 .SM
 .B BASH_REMATCH
@@ -925,8 +929,11 @@ string matching the \fIn\fPth parenthesized subexpression.
 \fBBash\fP sets
 .SM
 .B BASH_REMATCH
-in the global scope; declaring it as a local variable will lead to
-unexpected results.
+in the global scope if it is not set;
+if it is declared as a local variable before running
+.BR [[ ,
+.B bash
+keeps it a local variable.
 .IP
 Expressions may be combined using the following operators, listed
 in decreasing order of precedence:

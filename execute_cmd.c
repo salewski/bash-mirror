@@ -5424,6 +5424,8 @@ execute_function (SHELL_VAR *var, WORD_LIST *words, int flags, struct fd_bitmap 
     stop_pipeline (async, (COMMAND *)NULL);
 #endif
 
+  /* We are no longer in a loop. See Posix interp 842 (the function is not
+     "lexically enclosed" by the loop). */
   if (shell_compatibility_level > 43)
     loop_level = 0;
 

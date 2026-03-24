@@ -786,14 +786,15 @@ fprintf(stderr, "extmatch: flags = %d\n", flags);
 
   switch (xc)
     {
-    case L('+'):		/* match one or more occurrences */
     case L('*'):		/* match zero or more occurrences */
       /* If we can get away with no matches, don't even bother.  Just
 	 call GMATCH on the rest of the pattern and return success if
 	 it succeeds. */
-      if (xc == L('*') && (GMATCH (s, se, prest, pe, NULL, flags) == 0))
+      if (GMATCH (s, se, prest, pe, NULL, flags) == 0)
 	return 0;
+    /* FALLTHROUGH */
 
+    case L('+'):		/* match one or more occurrences */
       /* OK, we have to do this the hard way.  First, we make sure one of
 	 the subpatterns matches, then we try to match the rest of the
 	 string. */
@@ -824,13 +825,14 @@ fprintf(stderr, "extmatch: flags = %d\n", flags);
       return (FNM_NOMATCH);
 
     case L('?'):		/* match zero or one of the patterns */
-    case L('@'):		/* match one (or more) of the patterns */
       /* If we can get away with no matches, don't even bother.  Just
 	 call gmatch on the rest of the pattern and return success if
 	 it succeeds. */
-      if (xc == L('?') && (GMATCH (s, se, prest, pe, NULL, flags) == 0))
+      if ((GMATCH (s, se, prest, pe, NULL, flags) == 0))
 	return 0;
+    /* FALLTHROUGH */
 
+    case L('@'):		/* match one (or more) of the patterns */
       /* OK, we have to do this the hard way.  First, we see if one of
 	 the subpatterns matches, then, if it does, we try to match the
 	 rest of the string. */

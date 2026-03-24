@@ -616,7 +616,10 @@ termsig_handler (int sig)
      an interactive shell is running in a terminal window that gets closed
      with the `close' button.  We can't test for RL_STATE_READCMD because
      readline no longer handles SIGTERM synchronously.  */
-  if (interactive_shell && interactive && (sig == SIGHUP || sig == SIGTERM) && (remember_on_history || enable_history_list))
+  if (interactive_shell &&
+	(interactive || parse_and_execute_level || sourcelevel) &&
+	(sig == SIGHUP || sig == SIGTERM) &&
+	(remember_on_history || enable_history_list))
     maybe_save_shell_history ();
 #endif /* HISTORY */
 

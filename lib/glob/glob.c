@@ -1,6 +1,6 @@
 /* glob.c -- file-name wildcard pattern matching for Bash.
 
-   Copyright (C) 1985-2023 Free Software Foundation, Inc.
+   Copyright (C) 1985-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne-Again SHell.
    
@@ -279,13 +279,16 @@ skipname (char *pat, char *dname, int flags)
      literal `.'. This is the negation of the next clause. */
   else if ((flags & GX_NEGATE) && noglob_dot_filenames == 0 &&
 	dname[0] == '.' &&
-	(pat[0] == '.' || (pat[0] == '\\' && pat[1] == '.')))
+	(pat[0] && pat[0] == '.' || (pat[0] == '\\' && pat[1] == '.')))
     return 0;
 #endif
 
-  /* If a dot must be explicitly matched, check to see if they do. */
+  /* If a dot must be explicitly matched, check to see if the
+     pattern and dirname both have one. */
+  /* This allows the empty pattern to `match' a `.', deferring the match
+     until later. */
   else if (noglob_dot_filenames && dname[0] == '.' &&
- 	   pat[0] != '.' && (pat[0] != '\\' || pat[1] != '.'))
+	     pat[0] && pat[0] != '.' && (pat[0] != '\\' || pat[1] != '.'))
     return 1;
 
   return 0;
@@ -312,14 +315,16 @@ wskipname (wchar_t *pat, wchar_t *dname, int flags)
      literal `.'. This is the negation of the next clause. */
   else if ((flags & GX_NEGATE) && noglob_dot_filenames == 0 &&
 	dname[0] == L'.' &&
-	(pat[0] == L'.' || (pat[0] == L'\\' && pat[1] == L'.')))
+	(pat[0] != L'\0' && pat[0] == L'.' || (pat[0] == L'\\' && pat[1] == L'.')))
     return 0;
 #endif
 
   /* If a leading dot must be explicitly matched, check to see if the
      pattern and dirname both have one. */
+  /* This allows the empty pattern to `match' a `.', deferring the match
+     until later. */
   else if (noglob_dot_filenames && dname[0] == L'.' &&
-	pat[0] != L'.' && (pat[0] != L'\\' || pat[1] != L'.'))
+	     pat[0] && pat[0] != L'.' && (pat[0] != L'\\' || pat[1] != L'.'))
     return 1;
 
   return 0;

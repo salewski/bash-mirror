@@ -12786,3 +12786,26 @@ sig.c
 builtins/psize.c
 	- sigpipe: work around cygwin SIGPIPE delivery bug
 	  Report and fix from Duncan Roe <bduncan_roe@optusnet.com.au>
+
+				   3/10
+				   ----
+sig.c
+	- termsig_handler: save history even if the shell is non-interactive
+	  when the signal is delivered if parse_and_execute_level or
+	  sourcelevel are non-zero
+	  Update to fix from 3/6
+
+				   3/11
+				   ----
+lib/glob/glob.c
+	- skipname,wskipname: make sure PAT is not the empty string when
+	  checking whether it begins with `.' when deciding whether to skip
+	  a filename that begins with `.'. This `match' defers the matching
+	  until subsequent functions can match the rest of the pattern.
+	  Fixes bug reported by Isaac Z. Schlueter <i@izs.me>
+
+				   3/16
+				   ----
+doc/bash.1,doc/bashref.texi
+	- BASH_REMATCH: update [[ documentation to note that BASH_REMATCH can
+	  be a local variable

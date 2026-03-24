@@ -4,9 +4,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This text is a brief description of the features that are present in
-the Bash shell (version 5.3, 14 January 2026).
+the Bash shell (version 5.3, 16 March 2026).
 
-This is Edition 5.3, last updated 14 January 2026,
+This is Edition 5.3, last updated 16 March 2026,
 of The GNU Bash Reference Manual,
 for Bash, Version 5.3.
 
@@ -77,10 +77,10 @@ Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a>, Previou
 <h1 class="top" id="Bash-Features-1"><span>Bash Features<a class="copiable-link" href="#Bash-Features-1"> &para;</a></span></h1>
 
 <p>This text is a brief description of the features that are present in
-the Bash shell (version 5.3, 14 January 2026).
+the Bash shell (version 5.3, 16 March 2026).
 The Bash home page is <a class="url" href="http://www.gnu.org/software/bash/">http://www.gnu.org/software/bash/</a>.
 </p>
-<p>This is Edition 5.3, last updated 14 January 2026,
+<p>This is Edition 5.3, last updated 16 March 2026,
 of <cite class="cite">The GNU Bash Reference Manual</cite>,
 for <code class="code">Bash</code>, Version 5.3.
 </p>
@@ -1699,6 +1699,8 @@ special pattern characters where that&rsquo;s necessary.
 </p>
 <p>The array variable <code class="code">BASH_REMATCH</code> records which parts of the string
 matched the pattern.
+Bash unsets <code class="code">BASH_REMATCH</code>
+before attempting the match, so if there is no match, it remains unset.
 The element of <code class="code">BASH_REMATCH</code> with index 0 contains the portion of
 the string matching the entire regular expression.
 Substrings matched by parenthesized subexpressions within the regular
@@ -1708,8 +1710,10 @@ string matching the <var class="var">n</var>th parenthesized subexpression.
 </p>
 <p>Bash sets
 <code class="code">BASH_REMATCH</code>
-in the global scope; declaring it as a local variable will lead to
-unexpected results.
+in the global scope if it is not set;
+if it is declared as a local variable before running
+<code class="code">[[</code>,
+Bash keeps it a local variable.
 </p>
 <p>Expressions may be combined using the following operators, listed
 in decreasing order of precedence:
@@ -2705,8 +2709,10 @@ introduce indirection.
 <p>In each of the cases below, <var class="var">word</var> is subject to tilde expansion,
 parameter expansion, command substitution, and arithmetic expansion.
 </p>
-<p>When not performing substring expansion, using the forms described
-below (e.g., &lsquo;<samp class="samp">:&minus;</samp>&rsquo;), Bash tests for a parameter that is unset or null.
+<p>When performing the first four expansions documented below
+(&lsquo;<samp class="samp">:-</samp>&rsquo;, &lsquo;<samp class="samp">:=</samp>&rsquo;, &lsquo;<samp class="samp">:?</samp>&rsquo;, and &lsquo;<samp class="samp">:+</samp>&rsquo;),
+including the colon,
+Bash tests for a parameter that is unset or null.
 Omitting the colon results in a test only for a parameter that is unset.
 Put another way, if the colon is included,
 the operator tests for both <var class="var">parameter</var>&rsquo;s existence and that its value
@@ -2714,7 +2720,10 @@ is not null; if the colon is omitted, the operator tests only for existence.
 </p>
 <dl class="table">
 <dt><code class="code">${<var class="var">parameter</var>:&minus;<var class="var">word</var>}</code></dt>
-<dd><p>If <var class="var">parameter</var> is unset or null, the expansion of
+<dd><p>If <var class="var">parameter</var>
+is unset or null,
+or unset if the colon is not present,
+the expansion of
 <var class="var">word</var> is substituted.
 Otherwise, the value of <var class="var">parameter</var> is substituted.
 </p>
@@ -2736,7 +2745,10 @@ unset-or-null
 
 </dd>
 <dt><code class="code">${<var class="var">parameter</var>:=<var class="var">word</var>}</code></dt>
-<dd><p>If <var class="var">parameter</var> is unset or null, the expansion of <var class="var">word</var>
+<dd><p>If <var class="var">parameter</var>
+is unset or null,
+or unset if the colon is not present,
+the expansion of <var class="var">word</var>
 is assigned to <var class="var">parameter</var>,
 and the result of the expansion
 is the final value of <var class="var">parameter</var>.
@@ -2765,7 +2777,9 @@ DEFAULT
 </dd>
 <dt><code class="code">${<var class="var">parameter</var>:?<var class="var">word</var>}</code></dt>
 <dd><p>If <var class="var">parameter</var>
-is null or unset, the shell writes
+is unset or null,
+or unset if the colon is not present,
+the shell writes
 the expansion of <var class="var">word</var> (or a message
 to that effect if <var class="var">word</var>
 is not present) to the standard error and, if it
@@ -2793,7 +2807,10 @@ $ echo ${var:?var is unset or null}
 </dd>
 <dt><code class="code">${<var class="var">parameter</var>:+<var class="var">word</var>}</code></dt>
 <dd><p>If <var class="var">parameter</var>
-is null or unset, nothing is substituted, otherwise the expansion of
+is unset or null,
+or unset if the colon is not present,
+nothing is substituted,
+otherwise the expansion of
 <var class="var">word</var> is substituted.
 The value of <var class="var">parameter</var> is not used.
 </p>
@@ -6106,7 +6123,7 @@ corresponding <var class="var">argument</var> in the same way as <code class="co
 <dt><code class="code">%q</code></dt>
 <dd><p>Causes <code class="code">printf</code> to output the
 corresponding <var class="var">argument</var> in a format that can be reused as shell input.
-<code class="code">%q</code> and <code class="code">%Q</code>P use the ANSI-C quoting style (see <a class="pxref" href="#ANSI_002dC-Quoting">ANSI-C Quoting</a>)
+<code class="code">%q</code> and <code class="code">%Q</code> use the ANSI-C quoting style (see <a class="pxref" href="#ANSI_002dC-Quoting">ANSI-C Quoting</a>)
 if any characters
 in the argument string require it, and backslash quoting otherwise.
 If the format string uses the <code class="code">printf</code> <em class="emph">alternate form</em>, these two
@@ -9524,7 +9541,7 @@ This means you can use <var class="var">x</var>,
 where <var class="var">x</var> is a shell variable name, in an arithmetic expression,
 and the shell will evaluate its value as an expression and use the
 result.
-A shell variable that is null or unset evaluates to 0 when referenced
+A shell variable that is unset or null evaluates to 0 when referenced
 by name in an expression.
 </p>
 <p>The value of a variable is evaluated as an arithmetic expression
@@ -10333,7 +10350,8 @@ redirection.
 builtins.
 
 </li><li> Tilde expansion is only performed on assignments preceding a command
-name, rather than on all assignment statements on the line.
+name, rather than on all assignment statements on the line, unless
+the command is a declaration command.
 
 </li><li> While variable indirection is available, it may not be applied to the
 &lsquo;<samp class="samp">#</samp>&rsquo; and &lsquo;<samp class="samp">?</samp>&rsquo; special parameters.
@@ -10635,6 +10653,12 @@ entries if <code class="code">FCEDIT</code> is unset, rather than defaulting dir
 <code class="code">ed</code>.
 <code class="code">fc</code> uses <code class="code">ed</code> if <code class="code">EDITOR</code> is unset.
 
+
+</li><li> Bash does not perform redirections before expanding variable assignments
+preceding a simple command; it does not allow the redirections access to
+the results of the variable assignments, but any side effects of expanding
+the redirections take place first.
+If compiled in <i class="i">strict posix</i> mode, Bash performs redirections first.
 
 </li><li> As noted above, Bash requires the <code class="code">xpg_echo</code> option to be enabled for
 the <code class="code">echo</code> builtin to be fully conformant.

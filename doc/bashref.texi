@@ -1379,6 +1379,8 @@ special pattern characters where that's necessary.
 
 The array variable @code{BASH_REMATCH} records which parts of the string
 matched the pattern.
+Bash unsets @code{BASH_REMATCH}
+before attempting the match, so if there is no match, it remains unset.
 The element of @code{BASH_REMATCH} with index 0 contains the portion of
 the string matching the entire regular expression.
 Substrings matched by parenthesized subexpressions within the regular
@@ -1388,8 +1390,10 @@ string matching the @var{n}th parenthesized subexpression.
 
 Bash sets
 @code{BASH_REMATCH}
-in the global scope; declaring it as a local variable will lead to
-unexpected results.
+in the global scope if it is not set;
+if it is declared as a local variable before running
+@code{[[},
+Bash keeps it a local variable.
 
 Expressions may be combined using the following operators, listed
 in decreasing order of precedence:
@@ -5552,7 +5556,7 @@ corresponding @var{argument} in the same way as @code{echo -e}
 @item %q
 Causes @code{printf} to output the
 corresponding @var{argument} in a format that can be reused as shell input.
-@code{%q} and @code{%Q}P use the ANSI-C quoting style (@pxref{ANSI-C Quoting})
+@code{%q} and @code{%Q} use the ANSI-C quoting style (@pxref{ANSI-C Quoting})
 if any characters
 in the argument string require it, and backslash quoting otherwise.
 If the format string uses the @code{printf} @emph{alternate form}, these two

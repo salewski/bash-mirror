@@ -7,8 +7,10 @@ trap 'echo CHLD' SIGCHLD
 { echo before ; : ; echo after; } &
 wait
 
-sleep 1 &
-sleep 1 &
+# use sleep 2 to avoid reaping these children while running the SIGCHLD trap
+# after the `sleep 1'
+sleep 2 &
+sleep 2 &
 
 sleep 1
 wait

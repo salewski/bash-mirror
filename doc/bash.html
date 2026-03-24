@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.23.0 -->
-<!-- CreationDate: Thu Jan 29 13:25:46 2026 -->
+<!-- CreationDate: Mon Mar 16 15:46:12 2026 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -1028,7 +1028,9 @@ string.</p>
 
 <p style="margin-left:18%; margin-top: 1em">The array
 variable <b><small>BASH_REMATCH</small></b> records which
-parts of the string matched the pattern. The element of
+parts of the string matched the pattern. <b>Bash</b> unsets
+<b>BASH_REMATCH</b> before attempting the match, so if there
+is no match, it remains unset. The element of
 <b><small>BASH_REMATCH</small></b> with index 0 contains the
 portion of the string matching the entire regular
 expression. Substrings matched by parenthesized
@@ -1037,9 +1039,10 @@ the remaining <b><small>BASH_REMATCH</small></b> indices.
 The element of <b><small>BASH_REMATCH</small></b> with index
 <i>n</i> is the portion of the string matching the
 <i>n</i>th parenthesized subexpression. <b>Bash</b> sets
-<b><small>BASH_REMATCH</small></b> in the global scope;
-declaring it as a local variable will lead to unexpected
-results.</p>
+<b><small>BASH_REMATCH</small></b> in the global scope if it
+is not set; if it is declared as a local variable before
+running <b>[[</b>, <b>bash</b> keeps it a local
+variable.</p>
 
 <p style="margin-left:18%; margin-top: 1em">Expressions may
 be combined using the following operators, listed in
@@ -4094,47 +4097,50 @@ cases below, <i>word</i> is subject to tilde expansion,
 parameter expansion, command substitution, and arithmetic
 expansion.</p>
 
-<p style="margin-left:9%; margin-top: 1em">When not
-performing substring expansion, using the forms documented
-below (e.g., <b>:-</b>), <b>bash</b> tests for a parameter
-that is unset or null. Omitting the colon tests only for a
-parameter that is unset. <br>
+<p style="margin-left:9%; margin-top: 1em">When performing
+the first four expansions documented below (<b>:-</b>,
+<b>:=</b>, <b>:?</b>, and <b>:+</b>), including the colon,
+<b>bash</b> tests for a parameter that is unset or null.
+Omitting the colon tests only for a parameter that is unset.
+<br>
 ${<i>parameter</i><b>:&minus;</b><i>word</i>}</p>
 
 <p style="margin-left:18%;"><b>Use Default Values</b>. If
-<i>parameter</i> is unset or null, the expansion of
-<i>word</i> is substituted. Otherwise, the value of
-<i>parameter</i> is substituted.</p>
+<i>parameter</i> is unset or null, or unset if the colon is
+not present, the expansion of <i>word</i> is substituted.
+Otherwise, the value of <i>parameter</i> is substituted.</p>
 
 
 <p style="margin-left:9%;">${<i>parameter</i><b>:=</b><i>word</i>}</p>
 
 <p style="margin-left:18%;"><b>Assign Default Values</b>.
-If <i>parameter</i> is unset or null, the expansion of
-<i>word</i> is assigned to <i>parameter</i>, and the
-expansion is the final value of <i>parameter</i>. Positional
-parameters and special parameters may not be assigned in
-this way.</p>
+If <i>parameter</i> is unset or null, or unset if the colon
+is not present, the expansion of <i>word</i> is assigned to
+<i>parameter</i>, and the expansion is the final value of
+<i>parameter</i>. Positional parameters and special
+parameters may not be assigned in this way.</p>
 
 
 <p style="margin-left:9%;">${<i>parameter</i><b>:?</b><i>word</i>}</p>
 
 <p style="margin-left:18%;"><b>Display Error if Null or
-Unset</b>. If <i>parameter</i> is null or unset, the shell
-writes the expansion of <i>word</i> (or a message to that
-effect if <i>word</i> is not present) to the standard error
-and, if it is not interactive, exits with a non-zero status.
-An interactive shell does not exit, but does not execute the
-command associated with the expansion. Otherwise, the value
-of <i>parameter</i> is substituted.</p>
+Unset</b>. If <i>parameter</i> is unset or null, or unset if
+the colon is not present, the shell writes the expansion of
+<i>word</i> (or a message to that effect if <i>word</i> is
+not present) to the standard error and, if it is not
+interactive, exits with a non-zero status. An interactive
+shell does not exit, but does not execute the command
+associated with the expansion. Otherwise, the value of
+<i>parameter</i> is substituted.</p>
 
 
 <p style="margin-left:9%;">${<i>parameter</i><b>:+</b><i>word</i>}</p>
 
 <p style="margin-left:18%;"><b>Use Alternate Value</b>. If
-<i>parameter</i> is null or unset, nothing is substituted,
-otherwise the expansion of <i>word</i> is substituted. The
-value of <i>parameter</i> is not used.</p>
+<i>parameter</i> is unset or null, or unset if the colon is
+not present, nothing is substituted, otherwise the expansion
+of <i>word</i> is substituted. The value of <i>parameter</i>
+is not used.</p>
 
 
 <p style="margin-left:9%;">${<i>parameter</i><b>:</b><i>offset</i>}

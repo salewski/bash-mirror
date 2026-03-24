@@ -263,6 +263,8 @@ cutfields (SHELL_VAR *v, arrayind_t ind, char *line, struct cutop *ops)
   size_t llen, fsize;
   int i, b, n, s, e, nf;
 
+  llen = strlen(line);
+
   delim[0] = ops->delim;
   delim[1] = '\0';
 
@@ -318,7 +320,7 @@ cutfields (SHELL_VAR *v, arrayind_t ind, char *line, struct cutop *ops)
     }
 
   /* build the string and assign or print it all at once */
-  buf = xmalloc (strlen (line) + 1);
+  buf = xmalloc (llen + 1);
 
   for (i = 1, n = b = 0; b < nf; b++)
     {
