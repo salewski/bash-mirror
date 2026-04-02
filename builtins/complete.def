@@ -540,7 +540,15 @@ print_arg (const char *arg, const char *flag, int quote)
 
   if (arg)
     {
-      x = quote ? sh_single_quote (arg) : (char *)arg;
+      if (quote)
+	{
+	  if (ansic_shouldquote (arg))
+	    x = ansic_quote (arg, 0, (int *)0);
+	  else
+	    x = sh_single_quote (arg);
+	}
+      else
+	x = (char *)arg;
       printf ("%s %s ", flag, x);
       if (x != arg)
 	free (x);
@@ -551,7 +559,10 @@ static void
 print_cmd_name (const char *cmd)
 {
   char *x;
+  char *fmt;
 
+  fmt = (*cmd == '-') ? "-- %s" : "%s";
+  
   if (STREQ (cmd, DEFAULTCMD))
     printf ("-D");
   else if (STREQ (cmd, EMPTYCMD))
@@ -560,14 +571,20 @@ print_cmd_name (const char *cmd)
     printf ("-I");
   else if (*cmd == 0)		/* XXX - can this happen? */
     printf ("''");
+  else if (ansic_shouldquote (cmd))
+    {
+      x = ansic_quote (cmd, 0, (int *)0);
+      printf (fmt, x);
+      free (x);
+    }
   else if (sh_contains_shell_metas (cmd))
     {
       x = sh_single_quote (cmd);
-      printf ("%s", x);
+      printf (fmt, x);
       free (x);
     }
   else
-    printf ("%s", cmd);
+    printf (fmt, cmd);
 }
 
 static int

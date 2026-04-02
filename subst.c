@@ -2851,7 +2851,7 @@ assignment_name (const char *string)
 /* Return a single string of all the words in LIST.  SEP is the separator
    to put between individual elements of LIST in the output string. */
 char *
-string_list_internal (WORD_LIST *list, char *sep)
+string_list_internal (WORD_LIST *list, char *sep, int flags)
 {
   register WORD_LIST *t;
   char *result, *r;
@@ -2904,7 +2904,7 @@ string_list_internal (WORD_LIST *list, char *sep)
 char *
 string_list (WORD_LIST *list)
 {
-  return (string_list_internal (list, " "));
+  return (string_list_internal (list, " ", 0));
 }
 
 /* An external interface that can be used by the rest of the shell to
@@ -2982,7 +2982,7 @@ string_list_dollar_star (WORD_LIST *list, int quoted, int flags)
   sep[1] = '\0';
 #endif
 
-  ret = string_list_internal (list, sep);
+  ret = string_list_internal (list, sep, 0);
 #if defined (HANDLE_MULTIBYTE) && !defined (__GNUC__)
   free (sep);
 #endif
@@ -3064,7 +3064,7 @@ string_list_dollar_at (WORD_LIST *list, int quoted, int flags)
 		? quote_list (list)
 		: list_quote_escapes (list);
 
-  ret = string_list_internal (tlist, sep);
+  ret = string_list_internal (tlist, sep, 0);
 #if defined (HANDLE_MULTIBYTE) && !defined (__GNUC__)
   free (sep);
 #endif
@@ -8179,7 +8179,7 @@ parameter_brace_expand_rhs (char *name, char *value,
 	  string_list_dollar_star for "$@" otherwise. */
       if (l->next && ifs_is_null)
 	{
-	  temp = string_list_internal (l, " ");
+	  temp = string_list_internal (l, " ", 0);
 	  w->flags |= W_SPLITSPACE;
 	}
       else if (l_hasdollat || l->next)
@@ -12452,11 +12452,10 @@ word_list_quote_removal (WORD_LIST *list, int quoted)
       if (result == 0)
 	result = e = tresult;
       else
-	{
-	  e->next = tresult;
-	  while (e->next)
-	    e = e->next;
-	}
+	e->next = tresult;
+
+      while (e && e->next)
+	e = e->next;
     }
   return (result);
 }
@@ -12584,11 +12583,10 @@ word_list_split (WORD_LIST *list)
       if (result == 0)
         result = e = tresult;
       else
-	{
-	  e->next = tresult;
-	  while (e->next)
-	    e = e->next;
-	}
+	e->next = tresult;
+
+      while (e && e->next)
+	e = e->next;
     }
   return (result);
 }

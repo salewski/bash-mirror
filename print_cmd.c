@@ -1132,7 +1132,10 @@ print_heredoc_header (REDIRECT *redirect)
   /* If the here document delimiter is quoted, single-quote it. */
   if (redirect->redirectee.filename->flags & W_QUOTED)
     {
-      x = sh_single_quote (redirect->here_doc_eof);
+      if (ansic_shouldquote (redirect->here_doc_eof))
+	x = ansic_quote (redirect->here_doc_eof, 0, (int *)0);
+      else
+	x = sh_single_quote (redirect->here_doc_eof);
       cprintf ("<<%s%s", kill_leading ? "-" : "", x);
       free (x);
     }

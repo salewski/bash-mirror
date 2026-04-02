@@ -8704,7 +8704,7 @@ There is no maximum
 limit on the size of an array, nor any requirement that members
 be indexed or assigned contiguously.
 Indexed arrays are referenced using arithmetic expressions
-that must expand to an integer (@pxref{Shell Arithmetic}))
+that must expand to an integer (@pxref{Shell Arithmetic})
 and are zero-based;
 associative arrays use arbitrary strings.
 Unless otherwise noted, indexed array indices must be non-negative integers.

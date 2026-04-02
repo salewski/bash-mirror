@@ -301,8 +301,12 @@ showtrap (int i, int show_default)
     }
   else if (signal_is_hard_ignored (i))
     t = (char *)NULL;
-  else
-    t = (p == (char *)IGNORE_SIG) ? (char *)NULL : sh_single_quote (p);
+  else if (p == (char *)IGNORE_SIG)
+    t = (char *)NULL;
+   else if (ansic_shouldquote (p))
+    t = ansic_quote (p, 0, (int *)0);
+   else
+    t = sh_single_quote (p);
 
   sn = signal_name (i);
   /* Make sure that signals whose names are unknown (for whatever reason)

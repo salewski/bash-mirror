@@ -118,7 +118,7 @@ extern char *assignment_name (const char *);
 
 /* Return a single string of all the words present in LIST, separating
    each word with SEP. */
-extern char *string_list_internal (WORD_LIST *, char *);
+extern char *string_list_internal (WORD_LIST *, char *, int);
 
 /* Return a single string of all the words present in LIST, separating
    each word with a space. */

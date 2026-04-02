@@ -6782,7 +6782,7 @@ error_token_from_token (int tok)
       break;
     case ARITH_FOR_EXPRS:
       if (yylval.word_list)
-	t = string_list_internal (yylval.word_list, " ; ");
+	t = string_list_internal (yylval.word_list, " ; ", 0);
       break;
     case COND_CMD:
       t = (char *)NULL;		/* punt */

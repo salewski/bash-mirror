@@ -7266,7 +7266,7 @@ Any variable may be used as an indexed array; the ‘declare’ builtin
 explicitly declares an array.  There is no maximum limit on the size of
 an array, nor any requirement that members be indexed or assigned
 contiguously.  Indexed arrays are referenced using arithmetic
-expressions that must expand to an integer (*note Shell Arithmetic::))
+expressions that must expand to an integer (*note Shell Arithmetic::)
 and are zero-based; associative arrays use arbitrary strings.  Unless
 otherwise noted, indexed array indices must be non-negative integers.
 
@@ -13813,66 +13813,66 @@ Node: Bash Conditional Expressions311295
 Node: Shell Arithmetic316715
 Node: Aliases320045
 Node: Arrays323182
-Node: The Directory Stack330888
-Node: Directory Stack Builtins331688
-Node: Controlling the Prompt336136
-Node: The Restricted Shell339023
-Node: Bash POSIX Mode342119
-Node: Shell Compatibility Mode361938
-Node: Job Control370948
-Node: Job Control Basics371408
-Node: Job Control Builtins377779
-Node: Job Control Variables384570
-Node: Command Line Editing385804
-Node: Introduction and Notation387510
-Node: Readline Interaction389865
-Node: Readline Bare Essentials391056
-Node: Readline Movement Commands392867
-Node: Readline Killing Commands393866
-Node: Readline Arguments395892
-Node: Searching396985
-Node: Readline Init File399231
-Node: Readline Init File Syntax400537
-Node: Conditional Init Constructs427491
-Node: Sample Init File431879
-Node: Bindable Readline Commands435002
-Node: Commands For Moving436543
-Node: Commands For History439010
-Node: Commands For Text444404
-Node: Commands For Killing448532
-Node: Numeric Arguments451323
-Node: Commands For Completion452478
-Node: Keyboard Macros458177
-Node: Miscellaneous Commands458881
-Node: Readline vi Mode466427
-Node: Programmable Completion467407
-Node: Programmable Completion Builtins477146
-Node: A Programmable Completion Example488886
-Node: Using History Interactively494234
-Node: Bash History Facilities494918
-Node: Bash History Builtins498656
-Node: History Interaction506254
-Node: Event Designators511207
-Node: Word Designators512788
-Node: Modifiers515183
-Node: Installing Bash517123
-Node: Basic Installation518242
-Node: Compilers and Options522121
-Node: Compiling For Multiple Architectures522874
-Node: Installation Names524630
-Node: Specifying the System Type526867
-Node: Sharing Defaults527616
-Node: Operation Controls528333
-Node: Optional Features529355
-Node: Reporting Bugs542081
-Node: Major Differences From The Bourne Shell543441
-Node: GNU Free Documentation License564871
-Node: Indexes590051
-Node: Builtin Index590505
-Node: Reserved Word Index597606
-Node: Variable Index600054
-Node: Function Index617470
-Node: Concept Index631606
+Node: The Directory Stack330887
+Node: Directory Stack Builtins331687
+Node: Controlling the Prompt336135
+Node: The Restricted Shell339022
+Node: Bash POSIX Mode342118
+Node: Shell Compatibility Mode361937
+Node: Job Control370947
+Node: Job Control Basics371407
+Node: Job Control Builtins377778
+Node: Job Control Variables384569
+Node: Command Line Editing385803
+Node: Introduction and Notation387509
+Node: Readline Interaction389864
+Node: Readline Bare Essentials391055
+Node: Readline Movement Commands392866
+Node: Readline Killing Commands393865
+Node: Readline Arguments395891
+Node: Searching396984
+Node: Readline Init File399230
+Node: Readline Init File Syntax400536
+Node: Conditional Init Constructs427490
+Node: Sample Init File431878
+Node: Bindable Readline Commands435001
+Node: Commands For Moving436542
+Node: Commands For History439009
+Node: Commands For Text444403
+Node: Commands For Killing448531
+Node: Numeric Arguments451322
+Node: Commands For Completion452477
+Node: Keyboard Macros458176
+Node: Miscellaneous Commands458880
+Node: Readline vi Mode466426
+Node: Programmable Completion467406
+Node: Programmable Completion Builtins477145
+Node: A Programmable Completion Example488885
+Node: Using History Interactively494233
+Node: Bash History Facilities494917
+Node: Bash History Builtins498655
+Node: History Interaction506253
+Node: Event Designators511206
+Node: Word Designators512787
+Node: Modifiers515182
+Node: Installing Bash517122
+Node: Basic Installation518241
+Node: Compilers and Options522120
+Node: Compiling For Multiple Architectures522873
+Node: Installation Names524629
+Node: Specifying the System Type526866
+Node: Sharing Defaults527615
+Node: Operation Controls528332
+Node: Optional Features529354
+Node: Reporting Bugs542080
+Node: Major Differences From The Bourne Shell543440
+Node: GNU Free Documentation License564870
+Node: Indexes590050
+Node: Builtin Index590504
+Node: Reserved Word Index597605
+Node: Variable Index600053
+Node: Function Index617469
+Node: Concept Index631605
 
 End Tag Table
 

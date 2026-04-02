@@ -616,7 +616,7 @@ assoc_to_string (HASH_TABLE *h, char *sep, int quoted)
 
   l = REVERSE_LIST(list, WORD_LIST *);
 
-  result = l ? string_list_internal (l, sep) : savestring ("");
+  result = l ? string_list_internal (l, sep, 0) : savestring ("");
   dispose_words (l);  
 
   return result;

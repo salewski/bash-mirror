@@ -12809,3 +12809,25 @@ lib/glob/glob.c
 doc/bash.1,doc/bashref.texi
 	- BASH_REMATCH: update [[ documentation to note that BASH_REMATCH can
 	  be a local variable
+
+				   3/20
+				   ----
+subst.c
+	- word_list_quote_removal,word_list_split: fix initial setting of E
+	  on first word split (RESULT == 0). If TRESULT expands to multiple
+	  words, all but the first word were dropped because we didn't set
+	  E to the end of the TRESULT list
+
+				   3/30
+				   ----
+builtins/complete.def
+	- print_cmd_name: prefix command names starting with `-' (however
+	  unlikely) with `--'
+	  Report from Étienne Barrié <etienne.barrie@gmail.com>
+	- print_cmd_name: use ansic_quote() to quote the command name if
+	  necessary
+
+builtins/type.def,builtins/complete.def,builtins/alias.def,builtins/type.def
+print_cmd.c
+	- check for possible $'...' quoting and use it if appropriate instead
+	  of just calling sh_single_quote()

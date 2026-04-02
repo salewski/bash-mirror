@@ -231,7 +231,10 @@ describe_command (char *command, int dflags)
 	printf (_("%s is aliased to `%s'\n"), command, alias->value);
       else if (dflags & CDESC_REUSABLE)
 	{
-	  x = sh_single_quote (alias->value);
+	  if (ansic_shouldquote (alias->value))
+	    x = ansic_quote (alias->value, 0, (int *)0);
+	  else
+	    x = sh_single_quote (alias->value);
 	  printf ("alias %s=%s\n", command, x);
 	  free (x);
 	}
