@@ -11776,7 +11776,7 @@ lib/sh/strtrans.c
 builtins/read.def
 	- read_builtin: make sure i is >= 0 after a timeout longjmp before
 	  trying to terminate input_string
-	  From a report from Duncan Roe <bduncan_roe@optusnet.com.au>
+	  From a report from Duncan Roe <duncan_roe@optusnet.com.au>
 
 jobs.c,jobs.h
 	- wait_for_background_pids: now takes a new first argument, WFLAGS.
@@ -12785,7 +12785,7 @@ sig.c
 				    ---
 builtins/psize.c
 	- sigpipe: work around cygwin SIGPIPE delivery bug
-	  Report and fix from Duncan Roe <bduncan_roe@optusnet.com.au>
+	  Report and fix from Duncan Roe <duncan_roe@optusnet.com.au>
 
 				   3/10
 				   ----
@@ -12831,3 +12831,27 @@ builtins/type.def,builtins/complete.def,builtins/alias.def,builtins/type.def
 print_cmd.c
 	- check for possible $'...' quoting and use it if appropriate instead
 	  of just calling sh_single_quote()
+
+				   4/21
+				   ----
+examples/loadables/rev.c
+	- new loadable builtin from Duncan Roe <duncan_roe@optusnet.com.au>
+
+				   4/23
+				   ----
+trap.c
+	- run_interrupt_trap: set catch_flag depending on whether or not there
+	  are any pending traps; don't set it to 0 unconditionally because we
+	  haven't run through all the signals
+	  Report and fix from František Šumšal <frantisek@sumsal.cz>
+
+				   4/27
+				   ----
+command.h
+	- W_DQUOTE (unused) -> W_SPLITONLY (future use)
+
+subst.c
+	- list_string: now takes a set of word flags as the third argument;
+	  old `quoted' is now (flags & W_QUOTED); changed all callers
+	  appropriately
+

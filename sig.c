@@ -607,9 +607,12 @@ termsig_handler (int sig)
   if (sig == SIGPIPE && builtin_catch_sigpipe)
     sigpipe_handler (sig);
 
-  /* I don't believe this condition ever tests true. */
+  /* I don't believe this condition ever tests true, so print a message if it does. */
   if (sig == SIGINT && signal_is_trapped (SIGINT))
-    run_interrupt_trap (0);
+    {
+      INTERNAL_DEBUG (("termsig_handler: running SIGINT trap"));
+      run_interrupt_trap (0);
+    }
 
 #if defined (HISTORY)
   /* If we don't do something like this, the history will not be saved when

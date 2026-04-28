@@ -70,6 +70,8 @@ extern int errno;
 
 #define SPECIAL_TRAP(s)	((s) == EXIT_TRAP || (s) == DEBUG_TRAP || (s) == ERROR_TRAP || (s) == RETURN_TRAP)
 
+#define any_pending_traps()	first_pending_trap() != -1
+
 /* An array of such flags, one for each signal, describing what the
    shell will do with a signal.  DEBUG_TRAP == NSIG; some code below
    assumes this. */
@@ -361,7 +363,10 @@ run_pending_traps (void)
 	}
     }
 
-  catch_flag = trapped_signal_received = 0;
+  /* reset this before we run through the loop; if a signal arrives while we
+     are running the traps, it will set catch_flag to 1. */
+  catch_flag = 0;
+  trapped_signal_received = 0;
 
   /* Preserve $? when running trap. */
   trap_saved_exit_value = old_exit_value = last_command_exit_value;
@@ -1369,7 +1374,9 @@ run_interrupt_trap (int will_throw)
   if (will_throw && running_trap > 0)
     run_trap_cleanup (running_trap - 1);
   pending_traps[SIGINT] = 0;	/* run_pending_traps does this */
-  catch_flag = 0;
+  /* We don't want to set this to 0 unconditionally, since we're only running
+     a SIGINT trap. */
+  catch_flag = any_pending_traps ();
   _run_trap_internal (SIGINT, "interrupt trap");
 }
 

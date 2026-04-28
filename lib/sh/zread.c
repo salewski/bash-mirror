@@ -28,6 +28,7 @@
 
 #include <signal.h>
 #include <errno.h>
+#include <string.h>
 
 #if !defined (errno)
 extern int errno;
@@ -84,6 +85,15 @@ zbufpush(int c)
   zpushbuf[zpushind++] = c;
   return 1;
 }
+
+static inline int
+zbufpeek (void)
+{
+  if (zpushind == zpopind)
+    return (0);
+  return zpushbuf[zpopind];
+}
+
 
 /* Add C to the pushback buffer. Can't push back EOF */
 int
@@ -279,6 +289,26 @@ zreadn (int fd, char *cp, size_t len)
   if (cp)
     *cp = lbuf[lind++];
   return 1;
+}
+
+/* `Peek' in the read buffer for DELIM and return the number of characters to
+   read to get to DELIM. Just a skeleton for now. */
+size_t
+zpeekfd (int fd, int delim)
+{
+  int c;
+  ssize_t len;
+  char *t;
+
+  if ((c = zbufpeek ()) == delim)
+    return 1;
+  len = lused - lind;
+  if (len <= 0)
+    return 0;		/* not found, need to read more */
+  t = memchr (lbuf + lind, delim, len);
+  if (t != NULL)
+      return (t - lbuf - lind);
+  return 0;		/* not found, read more and let the buffer refill */
 }
 
 void

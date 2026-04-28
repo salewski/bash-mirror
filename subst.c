@@ -425,10 +425,10 @@ dump_word_flags (int flags)
       f &= ~W_NOPROCSUB;
       fprintf (stderr, "W_NOPROCSUB%s", f ? "|" : "");
     }
-  if (f & W_DQUOTE)
+  if (f & W_SPLITONLY)
     {
-      f &= ~W_DQUOTE;
-      fprintf (stderr, "W_DQUOTE%s", f ? "|" : "");
+      f &= ~W_SPLITONLY;
+      fprintf (stderr, "W_SPLITONLY%s", f ? "|" : "");
     }
   if (f & W_HASQUOTEDNULL)
     {
@@ -3177,17 +3177,20 @@ string_list_pos_params (int pchar, WORD_LIST *list, int quoted, int pflags)
 							     : ifs_whitespace (c))
 
 WORD_LIST *
-list_string (char *string, char *separators, int quoted)
+list_string (char *string, char *separators, int flags)
 {
   WORD_LIST *result;
   WORD_DESC *t;
   char *current_word, *s;
+  int quoted;
   int sh_style_split, whitesep, xflags, free_word;
   size_t sindex;
   size_t slen;
 
   if (!string || !*string)
     return ((WORD_LIST *)NULL);
+
+  quoted = flags & W_QUOTED;
 
   sh_style_split = separators && separators[0] == ' ' &&
 				 separators[1] == '\t' &&
@@ -9103,6 +9106,15 @@ parameter_brace_transform (char *varname, char *value, array_eltstate_t *estatep
   if ((xc == 'a' || xc == 'A') && vtype == VT_VARIABLE && varname && v == 0)
     v = find_variable (varname);
 
+#if 0 /*TAG:bash-5.4 https://lists.gnu.org/archive/html/bug-bash/2026-03/msg00051.html 3/15/2026 */
+  /* something like ${x[1]@A} should be an error */
+  if (xc == 'A' && vtype == VT_ARRAYMEMBER && v && estatep->type == ARRAY_INDEXED && estatep->subtype == 0)
+    {
+      this_command_name = oname;
+      return (interactive_shell ? &expand_param_error : &expand_param_fatal);
+    }
+#endif
+
   temp1 = (char *)NULL;		/* shut up gcc */
   switch (vtype)
     {
@@ -12230,7 +12242,7 @@ finished_with_string:
     }
   else if (word->flags & W_ASSIGNRHS)
     {
-      list = list_string (istring, "", quoted);
+      list = list_string (istring, "", quoted ? W_QUOTED : 0);
       tword = list->word;
       if (had_quoted_null && QUOTED_NULL (istring))
 	tword->flags |= W_HASQUOTEDNULL;
@@ -12262,9 +12274,9 @@ finished_with_string:
 	     the individual words on $' \t\n'. We rely on previous steps to
 	     quote the portions of the word that should not be split */
 	  if (ifs_is_set == 0)
-	    list = list_string (istring, " \t\n", 1);	/* XXX quoted == 1? */
+	    list = list_string (istring, " \t\n", W_QUOTED);	/* XXX quoted == 1? */
 	  else
-	    list = list_string (istring, " ", 1);	/* XXX quoted == 1? */
+	    list = list_string (istring, " ", W_QUOTED);	/* XXX quoted == 1? */
 	}
 
       /* If we have $@ (has_dollar_at != 0) and we are in a context where we
@@ -12286,7 +12298,7 @@ finished_with_string:
 		 need it to get the space separation right if space isn't the
 		 first character in IFS (but is present) and to remove the 
 		 quoting we added back in param_expand(). */
-	      list = list_string (istring, *ifs_chars ? ifs_chars : " ", 1);
+	      list = list_string (istring, *ifs_chars ? ifs_chars : " ", W_QUOTED);
 	      /* This isn't exactly right in the case where we're expanding
 		 the RHS of an expansion like ${var-$@} where IFS=: (for
 		 example). The W_NOSPLIT2 means we do the separation with :;
@@ -12307,7 +12319,7 @@ finished_with_string:
 	  goto set_word_flags;
 	}
       else if (has_dollar_at && ifs_chars)
-	list = list_string (istring, *ifs_chars ? ifs_chars : " ", 1);
+	list = list_string (istring, *ifs_chars ? ifs_chars : " ", W_QUOTED);
       else
 	{
 	  tword = alloc_word_desc ();

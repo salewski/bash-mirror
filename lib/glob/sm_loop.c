@@ -356,6 +356,11 @@ fprintf(stderr, "gmatch: pattern = %s; pe = %s\n", pattern, pe);
 	  break;
 
 	default:
+	  /* POSIX says it should be something like this:
+		if ((U_CHAR)c != (U_CHAR)sc && (U_CHAR)c != TOUPPER(sc) && (U_CHAR)c != TOLOWER(sc))
+		  return (FNM_NOMATCH);
+	     with TOUPPER and TOLOWER handling wide characters appropriately.
+	  */
 	  if ((U_CHAR)c != FOLD (sc))
 	    return (FNM_NOMATCH);
 	}

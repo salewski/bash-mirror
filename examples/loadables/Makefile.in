@@ -259,6 +259,8 @@ fltexpr:	fltexpr.o
 jobid:	jobid.o
 	$(SHOBJ_LD) $(SHOBJ_LDFLAGS) $(SHOBJ_XLDFLAGS) -o $@ jobid.o $(SHOBJ_LIBS)
 
+rev:	rev.o
+	$(SHOBJ_LD) $(SHOBJ_LDFLAGS) $(SHOBJ_XLDFLAGS) -o $@ rev.o $(SHOBJ_LIBS)
 
 # pushd is a special case.  We use the same source that the builtin version
 # uses, with special compilation options.
@@ -325,7 +327,7 @@ OBJS = print.o truefalse.o accept.o sleep.o finfo.o getconf.o logname.o \
        basename.o dirname.o tty.o pathchk.o tee.o head.o rmdir.o necho.o \
        hello.o cat.o csv.o dsv.o kv.o cut.o printenv.o id.o whoami.o uname.o \
        sync.o push.o mkdir.o mktemp.o realpath.o strftime.o setpgid.o stat.o \
-       fdflags.o seq.o asort.o strptime.o chmod.o fltexpr.o jobid.o
+       fdflags.o seq.o asort.o strptime.o chmod.o fltexpr.o jobid.o rev.o
 
 ${OBJS}:	${BUILD_DIR}/config.h
 
@@ -369,3 +371,4 @@ asort.o: asort.c
 strptime.o: strptime.c
 fltexpr.o: fltexpr.c
 jobid.o: jobid.c
+rev.o: rev.c

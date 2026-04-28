@@ -92,7 +92,7 @@ enum command_type { cm_for, cm_case, cm_while, cm_if, cm_simple, cm_select,
 #define W_ASSNBLTIN	(1 << 16)	/* word is a builtin command that takes assignments */
 #define W_ASSIGNARG	(1 << 17)	/* word is assignment argument to command */
 #define W_HASQUOTEDNULL	(1 << 18)	/* word contains a quoted null character */
-#define W_DQUOTE	(1 << 19)	/* UNUSED - word should be treated as if double-quoted */
+#define W_SPLITONLY	(1 << 19)	/* word should be split but not undergo quoted null removal */
 #define W_NOPROCSUB	(1 << 20)	/* don't perform process substitution */
 #define W_SAWQUOTEDNULL	(1 << 21)	/* word contained a quoted null that was removed */
 #define W_ASSIGNASSOC	(1 << 22)	/* word looks like associative array assignment */
