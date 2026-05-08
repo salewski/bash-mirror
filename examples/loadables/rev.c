@@ -42,6 +42,7 @@
  */
 
 /* Headers */
+#include <config.h>
 
 #include <errno.h>
 #include <fcntl.h>
@@ -52,6 +53,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "shmbutil.h"
 #include "loadables.h"
 #include <array.h>                 /* Has to go after stdint & loadables (!) */
@@ -86,6 +88,7 @@ getlen(char *last_trlg_byte, int num_bytes_left)
 
   if ((*p-- & mask[1]) != mask[0])
     goto not_utf_8;
+  num_bytes_left--;
   n = 2;
   for (i = num_bytes_left >= 3 ? 3 : num_bytes_left; i > 0; i--, p--, n++)
   {                                /* 3 more bytes max */
@@ -119,9 +122,9 @@ reverse_line(SHELL_VAR *v, arrayind_t *ind, char *line, size_t len,
      * with NULL value and putting an allocated buffer in it.
      */
     bind_array_element (v, (*ind)++, (char *)NULL, 0);
-    buf = xmalloc(len + 1);        /* +1 for NUL */
+    buf = xmalloc(len + outputsep + 1);        /* +1 for NUL */
     (((ARRAY *)v->value)->lastref)->value = buf;
-    buf[len] = '\0';
+    buf[len + outputsep] = '\0';
   }                                /* if (v) */
 #endif
 
@@ -167,7 +170,7 @@ rev_internal(WORD_LIST *list)
   int rval;
   char sep;
   int opt;
-  int fd;
+  int fd, closefd;
 
   v = 0;
   rval = EXECUTION_SUCCESS;
@@ -177,7 +180,7 @@ rev_internal(WORD_LIST *list)
   ind = 0;
 
   reset_internal_getopt();
-  while ((opt = internal_getopt(list, "0:a:h")) != -1)
+  while ((opt = internal_getopt(list, "0a:h")) != -1)
     switch (opt)
     {
       case '0':
@@ -219,11 +222,15 @@ rev_internal(WORD_LIST *list)
   do
   {
 /* for each file */
+    closefd = 0;
 
     if (l == 0)
       fd = 0;
     else
-      SYSCALL(fd, open(l->word->word, O_RDONLY));
+      {
+        SYSCALL(fd, open(l->word->word, O_RDONLY));
+        closefd = fd != -1;;
+      }
     if (fd == -1)
     {
       file_error(l->word->word);
@@ -250,7 +257,7 @@ rev_internal(WORD_LIST *list)
       }
       reverse_line(v, &ind, line, n, outputsep, sep);
     }                              /* while ((n = zgetline(...) !=-1) */
-    if (fd != 0)
+    if (closefd)
       close(fd);
 
   next_file:

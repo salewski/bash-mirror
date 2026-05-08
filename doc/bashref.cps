@@ -1,24 +1,24 @@
 \initial {A}
 \entry{alias expansion}{109}
-\entry{arithmetic evaluation}{107}
+\entry{arithmetic evaluation}{108}
 \entry{arithmetic expansion}{37}
 \entry{arithmetic operators}{108}
-\entry{arithmetic, shell}{107}
+\entry{arithmetic, shell}{108}
 \entry{arrays}{110}
 \initial {B}
-\entry{background}{125}
-\entry{Bash configuration}{175}
-\entry{Bash installation}{175}
+\entry{background}{126}
+\entry{Bash configuration}{176}
+\entry{Bash installation}{176}
 \entry{binary arithmetic operators}{108}
 \entry{bitwise arithmetic operators}{108}
 \entry{Bourne shell}{5}
 \entry{brace expansion}{25}
 \entry{builtin}{3}
 \initial {C}
-\entry{command editing}{131}
+\entry{command editing}{132}
 \entry{command execution}{46}
 \entry{command expansion}{45}
-\entry{command history}{168}
+\entry{command history}{169}
 \entry{command search}{46}
 \entry{command substitution}{36}
 \entry{command timing}{10}
@@ -33,19 +33,19 @@
 \entry{comments, shell}{9}
 \entry{Compatibility Level}{122}
 \entry{Compatibility Mode}{122}
-\entry{completion builtins}{161}
+\entry{completion builtins}{162}
 \entry{conditional arithmetic operator}{108}
-\entry{configuration}{175}
+\entry{configuration}{176}
 \entry{control operator}{3}
 \entry{coprocess}{18}
 \initial {D}
 \entry{directory stack}{112}
 \entry{dollar-single quote quoting}{6}
 \initial {E}
-\entry{editing command lines}{131}
+\entry{editing command lines}{132}
 \entry{environment}{48}
-\entry{evaluation, arithmetic}{107}
-\entry{event designators}{172}
+\entry{evaluation, arithmetic}{108}
+\entry{event designators}{173}
 \entry{execution environment}{47}
 \entry{exit status}{3, 48}
 \entry{expansion}{25}
@@ -55,34 +55,34 @@
 \entry{expansion, parameter}{27}
 \entry{expansion, pathname}{39}
 \entry{expansion, tilde}{26}
-\entry{expressions, arithmetic}{107}
-\entry{expressions, conditional}{105}
+\entry{expressions, arithmetic}{108}
+\entry{expressions, conditional}{106}
 \initial {F}
 \entry{field}{3}
 \entry{filename}{3}
 \entry{filename expansion}{39}
-\entry{foreground}{125}
+\entry{foreground}{126}
 \entry{functions, shell}{19}
 \initial {H}
-\entry{history builtins}{169}
-\entry{history events}{172}
-\entry{history expansion}{171}
-\entry{history list}{168}
-\entry{History, how to use}{167}
+\entry{history builtins}{170}
+\entry{history events}{173}
+\entry{history expansion}{172}
+\entry{history list}{169}
+\entry{History, how to use}{168}
 \initial {I}
 \entry{identifier}{3}
-\entry{initialization file, readline}{133}
-\entry{installation}{175}
-\entry{interaction, readline}{130}
+\entry{initialization file, readline}{134}
+\entry{installation}{176}
+\entry{interaction, readline}{131}
 \entry{interactive shell}{102, 104}
 \entry{internationalization}{7}
 \entry{internationalized scripts}{8}
 \initial {J}
 \entry{job}{3}
-\entry{job control}{3, 125}
+\entry{job control}{3, 126}
 \initial {K}
-\entry{kill ring}{132}
-\entry{killing text}{132}
+\entry{kill ring}{133}
+\entry{killing text}{133}
 \initial {L}
 \entry{localization}{7}
 \entry{login shell}{102}
@@ -92,7 +92,7 @@
 \initial {N}
 \entry{name}{3}
 \entry{native languages}{7}
-\entry{notation, readline}{131}
+\entry{notation, readline}{132}
 \initial {O}
 \entry{operator, shell}{3}
 \initial {P}
@@ -109,20 +109,20 @@
 \entry{process group}{3}
 \entry{process group ID}{3}
 \entry{process substitution}{38}
-\entry{programmable completion}{158}
+\entry{programmable completion}{159}
 \entry{prompting}{114}
 \initial {Q}
 \entry{quoting}{6}
 \entry{quoting, ANSI}{6}
 \initial {R}
-\entry{Readline, how to use}{129}
+\entry{Readline, how to use}{130}
 \entry{redirection}{41}
 \entry{reserved word}{4}
 \entry{reserved words}{9}
 \entry{restricted shell}{115}
 \entry{return status}{4}
 \initial {S}
-\entry{shell arithmetic}{107}
+\entry{shell arithmetic}{108}
 \entry{shell function}{19}
 \entry{shell script}{50}
 \entry{shell variable}{22}
@@ -132,7 +132,7 @@
 \entry{special builtin}{4, 85}
 \entry{startup files}{102}
 \entry{string translations}{8}
-\entry{suspending jobs}{125}
+\entry{suspending jobs}{126}
 \initial {T}
 \entry{tilde expansion}{26}
 \entry{token}{4}
@@ -141,9 +141,9 @@
 \entry{unary arithmetic operators}{108}
 \initial {V}
 \entry{variable, shell}{22}
-\entry{variables, readline}{134}
+\entry{variables, readline}{135}
 \initial {W}
 \entry{word}{4}
 \entry{word splitting}{38}
 \initial {Y}
-\entry{yanking text}{132}
+\entry{yanking text}{133}

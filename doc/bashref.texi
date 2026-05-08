@@ -3570,7 +3570,7 @@ If @var{word} is unquoted,
 and the here-document text is treated similarly to a double-quoted string:
 all lines of the here-document are subjected to
 parameter expansion, command substitution, and arithmetic expansion,
-the character sequence @code{\newline} is treated literally,
+the character sequence @code{\newline} is treated as a line continuation,
 and @samp{\} must be used to quote the characters
 @samp{\}, @samp{$}, and @samp{`};
 however, double quote characters have no special meaning.
@@ -4105,7 +4105,7 @@ itself (scenario 1 above), for compatibility.
 @section Shell Scripts
 @cindex shell script
 
-A shell script is a text file containing shell commands.
+A @dfn{shell script} is a text file containing shell commands.
 When such a file is used as the first non-option argument when
 invoking Bash, and neither the @option{-c} nor @option{-s} option
 is supplied (@pxref{Invoking Bash}), 
@@ -7992,6 +7992,14 @@ connected to terminals (as determined by
 or one started with the @option{-i} option.
 @xref{Interactive Shells}, for more information.
 
+A @dfn{non-interactive shell} is, not surprisingly, one that does not
+satisfy the tests for interactivity given above.
+A non-interactive shell is usually started to run commands from a script
+file supplied as an argument (@pxref{Shell Scripts})
+or from a string supplied with the
+@option{-c}
+option.
+
 If arguments remain after option processing, and neither the
 @option{-c} nor the @option{-s}
 option has been supplied, the first argument is treated as
@@ -8009,13 +8017,41 @@ and, if no file is found, searches the directories in
 @env{PATH}
 for the script.
 
+For example, the following command starts an interactive shell:
+
+@example
+bash
+@end example
+
+@noindent
+whereas this command will read and execute commands from @file{filename}:
+
+@example
+bash filename
+@end example
+
+@noindent
+This command will execute @samp{echo hello}:
+
+@example
+bash -c 'echo hello'
+@end example
+
+@noindent
+and this will execute the same command
+read from the standard input:
+
+@example
+echo echo hello | bash
+@end example
+
 @node Bash Startup Files
 @section Bash Startup Files
 @cindex startup files
 
 This section describes how Bash executes its startup files.
 If any of the files exist but cannot be read, Bash reports an error.
-Tildes are expanded in filenames as described above under
+Tildes in filenames are expanded as described above under
 Tilde Expansion (@pxref{Tilde Expansion}).
 
 Interactive shells are described in @ref{Interactive Shells}.
@@ -8113,15 +8149,16 @@ standard for startup files.
 In this mode, interactive shells expand the @env{ENV} variable
 and read and execute commands from the file whose name is the
 expanded value.
-No other startup files are read.
+A posix-mode shell does not attempt to read any other startup files,
+even when invoked as a login shell.
 
 @subsubheading Invoked by remote shell daemon
 
 Bash
 attempts to determine when it is being run with its standard input
 connected to a network connection, as when executed by
-the historical and rarely-seen remote shell daemon, usually @code{rshd},
-or the secure shell daemon @code{sshd}.
+the secure shell daemon @code{sshd}.
+or the historical and rarely-seen remote shell daemon, usually @code{rshd}.
 If
 Bash
 determines it is being run non-interactively in this fashion,
@@ -8136,7 +8173,7 @@ option inhibits this behavior, and the
 option makes Bash use a different file instead of
 @file{~/.bashrc},
 but neither
-@code{rshd} nor @code{sshd} generally invoke the shell with those
+@command{sshd} nor @command{rshd} generally invoke the shell with those
 options or allow them to be specified.
 
 @subsubheading Invoked with unequal effective and real @sc{uid/gid}s
@@ -8148,7 +8185,7 @@ the @env{SHELLOPTS}, @env{BASHOPTS}, @env{CDPATH}, and @env{GLOBIGNORE}
 variables, if they appear in the environment, are ignored, and the effective
 user id is set to the real user id.
 If the @option{-p} option is supplied at invocation, the startup behavior is
-the same, but the effective user id is not reset.
+the same, but Bash does not reset the effective user id.
 
 @node Interactive Shells
 @section Interactive Shells

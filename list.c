@@ -1,6 +1,6 @@
 /* list.c - Functions for manipulating linked lists of objects. */
 
-/* Copyright (C) 1996-2009,2022 Free Software Foundation, Inc.
+/* Copyright (C) 1996-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -55,36 +55,74 @@ wlist_walk (WORD_LIST *words, sh_icpfunc_t *function)
 /* Reverse the chain of structures in LIST.  Output the new head
    of the chain.  You should always assign the output value of this
    function to something, or you will lose the chain. */
-GENERIC_LIST *
-list_reverse (GENERIC_LIST *list)
+void *
+list_reverse (void *head)
 {
-  register GENERIC_LIST *next, *prev;
+  void *next, *prev, *list;
 
-  for (prev = (GENERIC_LIST *)NULL; list; )
+  prev = NULL;
+  next = NULL;
+  list = head;
+
+  /* We rely on the fact that the C standard guarantees that structures are
+     not padded: the first member of the struct has the same address as the
+     struct itself. So *(void **)X is effectively X->next as long as next is
+     the first member of struct X. We'll see if this gets past gcc's strict
+     aliasing rules. */
+  while (list != NULL)
     {
-      next = list->next;
-      list->next = prev;
+      next = *(void **)list;		/* effectively list->next */
+      *(void **)list = prev;		/* effectively set list->next */
+
       prev = list;
       list = next;
     }
+
   return (prev);
 }
 
+#ifdef INCLUDE_UNUSED
 /* Return the number of elements in LIST, a generic list. */
 int
 list_length (GENERIC_LIST *list)
 {
-  register int i;
+  int i;
+
+  for (i = 0; list; list = list->next, i++);
+  return (i);
+}
+#endif
+
+int
+wlist_length (WORD_LIST *list)
+{
+  int i;
 
   for (i = 0; list; list = list->next, i++);
   return (i);
 }
 
+#if defined (INCLUDE_UNUSED)
 /* Append TAIL to HEAD.  Return the header of the list. */
 GENERIC_LIST *
 list_append (GENERIC_LIST *head, GENERIC_LIST *tail)
 {
   register GENERIC_LIST *t_head;
+
+  if (head == 0)
+    return (tail);
+
+  for (t_head = head; t_head->next; t_head = t_head->next)
+    ;
+  t_head->next = tail;
+  return (head);
+}
+#endif
+
+WORD_LIST *
+wlist_append (WORD_LIST *head, WORD_LIST *tail)
+{
+  register WORD_LIST *t_head;
 
   if (head == 0)
     return (tail);

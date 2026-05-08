@@ -74,8 +74,8 @@
 @numsubsecentry{What is an Interactive Shell?}{6.3.1}{What is an Interactive Shell?}{104}
 @numsubsecentry{Is this Shell Interactive?}{6.3.2}{Is this Shell Interactive?}{104}
 @numsubsecentry{Interactive Shell Behavior}{6.3.3}{Interactive Shell Behavior}{104}
-@numsecentry{Bash Conditional Expressions}{6.4}{Bash Conditional Expressions}{105}
-@numsecentry{Shell Arithmetic}{6.5}{Shell Arithmetic}{107}
+@numsecentry{Bash Conditional Expressions}{6.4}{Bash Conditional Expressions}{106}
+@numsecentry{Shell Arithmetic}{6.5}{Shell Arithmetic}{108}
 @numsecentry{Aliases}{6.6}{Aliases}{109}
 @numsecentry{Arrays}{6.7}{Arrays}{110}
 @numsecentry{The Directory Stack}{6.8}{The Directory Stack}{112}
@@ -86,58 +86,58 @@
 @numsubsecentry{What is POSIX?}{6.11.1}{}{116}
 @numsubsecentry{Bash POSIX Mode}{6.11.2}{}{117}
 @numsecentry{Shell Compatibility Mode}{6.12}{Shell Compatibility Mode}{122}
-@numchapentry{Job Control}{7}{Job Control}{125}
-@numsecentry{Job Control Basics}{7.1}{Job Control Basics}{125}
-@numsecentry{Job Control Builtins}{7.2}{Job Control Builtins}{126}
-@numsecentry{Job Control Variables}{7.3}{Job Control Variables}{129}
-@numchapentry{Command Line Editing}{8}{Command Line Editing}{130}
-@numsecentry{Introduction to Line Editing}{8.1}{Introduction and Notation}{130}
-@numsecentry{Readline Interaction}{8.2}{Readline Interaction}{130}
-@numsubsecentry{Readline Bare Essentials}{8.2.1}{Readline Bare Essentials}{131}
-@numsubsecentry{Readline Movement Commands}{8.2.2}{Readline Movement Commands}{131}
-@numsubsecentry{Readline Killing Commands}{8.2.3}{Readline Killing Commands}{132}
-@numsubsecentry{Readline Arguments}{8.2.4}{Readline Arguments}{132}
-@numsubsecentry{Searching for Commands in the History}{8.2.5}{Searching}{133}
-@numsecentry{Readline Init File}{8.3}{Readline Init File}{133}
-@numsubsecentry{Readline Init File Syntax}{8.3.1}{Readline Init File Syntax}{133}
-@numsubsecentry{Conditional Init Constructs}{8.3.2}{Conditional Init Constructs}{143}
-@numsubsecentry{Sample Init File}{8.3.3}{Sample Init File}{144}
-@numsecentry{Bindable Readline Commands}{8.4}{Bindable Readline Commands}{147}
-@numsubsecentry{Commands For Moving}{8.4.1}{Commands For Moving}{147}
-@numsubsecentry{Commands For Manipulating The History}{8.4.2}{Commands For History}{148}
-@numsubsecentry{Commands For Changing Text}{8.4.3}{Commands For Text}{150}
-@numsubsecentry{Killing And Yanking}{8.4.4}{Commands For Killing}{151}
-@numsubsecentry{Specifying Numeric Arguments}{8.4.5}{Numeric Arguments}{153}
-@numsubsecentry{Letting Readline Type For You}{8.4.6}{Commands For Completion}{153}
-@numsubsecentry{Keyboard Macros}{8.4.7}{Keyboard Macros}{155}
-@numsubsecentry{Some Miscellaneous Commands}{8.4.8}{Miscellaneous Commands}{155}
-@numsecentry{Readline vi Mode}{8.5}{Readline vi Mode}{158}
-@numsecentry{Programmable Completion}{8.6}{Programmable Completion}{158}
-@numsecentry{Programmable Completion Builtins}{8.7}{Programmable Completion Builtins}{161}
-@numsecentry{A Programmable Completion Example}{8.8}{A Programmable Completion Example}{165}
-@numchapentry{Using History Interactively}{9}{Using History Interactively}{168}
-@numsecentry{Bash History Facilities}{9.1}{Bash History Facilities}{168}
-@numsecentry{Bash History Builtins}{9.2}{Bash History Builtins}{169}
-@numsecentry{History Expansion}{9.3}{History Interaction}{171}
-@numsubsecentry{Event Designators}{9.3.1}{Event Designators}{172}
-@numsubsecentry{Word Designators}{9.3.2}{Word Designators}{173}
-@numsubsecentry{Modifiers}{9.3.3}{Modifiers}{174}
-@numchapentry{Installing Bash}{10}{Installing Bash}{175}
-@numsecentry{Basic Installation}{10.1}{Basic Installation}{175}
-@numsecentry{Compilers and Options}{10.2}{Compilers and Options}{176}
-@numsecentry{Compiling For Multiple Architectures}{10.3}{Compiling For Multiple Architectures}{176}
-@numsecentry{Installation Names}{10.4}{Installation Names}{177}
-@numsecentry{Specifying the System Type}{10.5}{Specifying the System Type}{177}
-@numsecentry{Sharing Defaults}{10.6}{Sharing Defaults}{177}
-@numsecentry{Operation Controls}{10.7}{Operation Controls}{178}
-@numsecentry{Optional Features}{10.8}{Optional Features}{178}
-@appentry{Reporting Bugs}{A}{Reporting Bugs}{184}
-@appentry{Major Differences From The Bourne Shell}{B}{Major Differences From The Bourne Shell}{185}
-@appsecentry{Implementation Differences From The SVR4.2 Shell}{B.1}{}{190}
-@appentry{GNU Free Documentation License}{C}{GNU Free Documentation License}{192}
-@appentry{Indexes}{D}{Indexes}{200}
-@appsecentry{Index of Shell Builtin Commands}{D.1}{Builtin Index}{200}
-@appsecentry{Index of Shell Reserved Words}{D.2}{Reserved Word Index}{201}
-@appsecentry{Parameter and Variable Index}{D.3}{Variable Index}{202}
-@appsecentry{Function Index}{D.4}{Function Index}{204}
-@appsecentry{Concept Index}{D.5}{Concept Index}{206}
+@numchapentry{Job Control}{7}{Job Control}{126}
+@numsecentry{Job Control Basics}{7.1}{Job Control Basics}{126}
+@numsecentry{Job Control Builtins}{7.2}{Job Control Builtins}{127}
+@numsecentry{Job Control Variables}{7.3}{Job Control Variables}{130}
+@numchapentry{Command Line Editing}{8}{Command Line Editing}{131}
+@numsecentry{Introduction to Line Editing}{8.1}{Introduction and Notation}{131}
+@numsecentry{Readline Interaction}{8.2}{Readline Interaction}{131}
+@numsubsecentry{Readline Bare Essentials}{8.2.1}{Readline Bare Essentials}{132}
+@numsubsecentry{Readline Movement Commands}{8.2.2}{Readline Movement Commands}{132}
+@numsubsecentry{Readline Killing Commands}{8.2.3}{Readline Killing Commands}{133}
+@numsubsecentry{Readline Arguments}{8.2.4}{Readline Arguments}{133}
+@numsubsecentry{Searching for Commands in the History}{8.2.5}{Searching}{134}
+@numsecentry{Readline Init File}{8.3}{Readline Init File}{134}
+@numsubsecentry{Readline Init File Syntax}{8.3.1}{Readline Init File Syntax}{134}
+@numsubsecentry{Conditional Init Constructs}{8.3.2}{Conditional Init Constructs}{144}
+@numsubsecentry{Sample Init File}{8.3.3}{Sample Init File}{145}
+@numsecentry{Bindable Readline Commands}{8.4}{Bindable Readline Commands}{148}
+@numsubsecentry{Commands For Moving}{8.4.1}{Commands For Moving}{148}
+@numsubsecentry{Commands For Manipulating The History}{8.4.2}{Commands For History}{149}
+@numsubsecentry{Commands For Changing Text}{8.4.3}{Commands For Text}{151}
+@numsubsecentry{Killing And Yanking}{8.4.4}{Commands For Killing}{152}
+@numsubsecentry{Specifying Numeric Arguments}{8.4.5}{Numeric Arguments}{154}
+@numsubsecentry{Letting Readline Type For You}{8.4.6}{Commands For Completion}{154}
+@numsubsecentry{Keyboard Macros}{8.4.7}{Keyboard Macros}{156}
+@numsubsecentry{Some Miscellaneous Commands}{8.4.8}{Miscellaneous Commands}{156}
+@numsecentry{Readline vi Mode}{8.5}{Readline vi Mode}{159}
+@numsecentry{Programmable Completion}{8.6}{Programmable Completion}{159}
+@numsecentry{Programmable Completion Builtins}{8.7}{Programmable Completion Builtins}{162}
+@numsecentry{A Programmable Completion Example}{8.8}{A Programmable Completion Example}{166}
+@numchapentry{Using History Interactively}{9}{Using History Interactively}{169}
+@numsecentry{Bash History Facilities}{9.1}{Bash History Facilities}{169}
+@numsecentry{Bash History Builtins}{9.2}{Bash History Builtins}{170}
+@numsecentry{History Expansion}{9.3}{History Interaction}{172}
+@numsubsecentry{Event Designators}{9.3.1}{Event Designators}{173}
+@numsubsecentry{Word Designators}{9.3.2}{Word Designators}{174}
+@numsubsecentry{Modifiers}{9.3.3}{Modifiers}{175}
+@numchapentry{Installing Bash}{10}{Installing Bash}{176}
+@numsecentry{Basic Installation}{10.1}{Basic Installation}{176}
+@numsecentry{Compilers and Options}{10.2}{Compilers and Options}{177}
+@numsecentry{Compiling For Multiple Architectures}{10.3}{Compiling For Multiple Architectures}{177}
+@numsecentry{Installation Names}{10.4}{Installation Names}{178}
+@numsecentry{Specifying the System Type}{10.5}{Specifying the System Type}{178}
+@numsecentry{Sharing Defaults}{10.6}{Sharing Defaults}{178}
+@numsecentry{Operation Controls}{10.7}{Operation Controls}{179}
+@numsecentry{Optional Features}{10.8}{Optional Features}{179}
+@appentry{Reporting Bugs}{A}{Reporting Bugs}{185}
+@appentry{Major Differences From The Bourne Shell}{B}{Major Differences From The Bourne Shell}{186}
+@appsecentry{Implementation Differences From The SVR4.2 Shell}{B.1}{}{191}
+@appentry{GNU Free Documentation License}{C}{GNU Free Documentation License}{193}
+@appentry{Indexes}{D}{Indexes}{201}
+@appsecentry{Index of Shell Builtin Commands}{D.1}{Builtin Index}{201}
+@appsecentry{Index of Shell Reserved Words}{D.2}{Reserved Word Index}{202}
+@appsecentry{Parameter and Variable Index}{D.3}{Variable Index}{203}
+@appsecentry{Function Index}{D.4}{Function Index}{205}
+@appsecentry{Concept Index}{D.5}{Concept Index}{207}

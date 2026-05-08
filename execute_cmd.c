@@ -3584,7 +3584,7 @@ execute_select_command (SELECT_COM *select_command)
   /* command and arithmetic substitution, parameter and variable expansion,
      word splitting, pathname expansion, and quote removal. */
   list = releaser = expand_words_no_vars (select_command->map_list);
-  list_len = list_length ((GENERIC_LIST *)list);
+  list_len = wlist_length (list);
   if (list == 0 || list_len == 0)
     {
       if (list)

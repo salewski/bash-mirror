@@ -4,9 +4,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This text is a brief description of the features that are present in
-the Bash shell (version 5.3, 16 March 2026).
+the Bash shell (version 5.3, 29 April 2026).
 
-This is Edition 5.3, last updated 16 March 2026,
+This is Edition 5.3, last updated 29 April 2026,
 of The GNU Bash Reference Manual,
 for Bash, Version 5.3.
 
@@ -77,10 +77,10 @@ Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a>, Previou
 <h1 class="top" id="Bash-Features-1"><span>Bash Features<a class="copiable-link" href="#Bash-Features-1"> &para;</a></span></h1>
 
 <p>This text is a brief description of the features that are present in
-the Bash shell (version 5.3, 16 March 2026).
+the Bash shell (version 5.3, 29 April 2026).
 The Bash home page is <a class="url" href="http://www.gnu.org/software/bash/">http://www.gnu.org/software/bash/</a>.
 </p>
-<p>This is Edition 5.3, last updated 16 March 2026,
+<p>This is Edition 5.3, last updated 29 April 2026,
 of <cite class="cite">The GNU Bash Reference Manual</cite>,
 for <code class="code">Bash</code>, Version 5.3.
 </p>
@@ -4611,7 +4611,7 @@ Previous: <a href="#Executing-Commands" accesskey="p" rel="prev">Executing Comma
 <h3 class="section" id="Shell-Scripts-1"><span>3.8 Shell Scripts<a class="copiable-link" href="#Shell-Scripts-1"> &para;</a></span></h3>
 <a class="index-entry-id" id="index-shell-script"></a>
 
-<p>A shell script is a text file containing shell commands.
+<p>A <em class="dfn">shell script</em> is a text file containing shell commands.
 When such a file is used as the first non-option argument when
 invoking Bash, and neither the <samp class="option">-c</samp> nor <samp class="option">-s</samp> option
 is supplied (see <a class="pxref" href="#Invoking-Bash">Invoking Bash</a>), 
@@ -8875,6 +8875,14 @@ connected to terminals (as determined by
 or one started with the <samp class="option">-i</samp> option.
 See <a class="xref" href="#Interactive-Shells">Interactive Shells</a>, for more information.
 </p>
+<p>A <em class="dfn">non-interactive shell</em> is, not surprisingly, one that does not
+satisfy the tests for interactivity given above.
+A non-interactive shell is usually started to run commands from a script
+file supplied as an argument (see <a class="pxref" href="#Shell-Scripts">Shell Scripts</a>)
+or from a string supplied with the
+<samp class="option">-c</samp>
+option.
+</p>
 <p>If arguments remain after option processing, and neither the
 <samp class="option">-c</samp> nor the <samp class="option">-s</samp>
 option has been supplied, the first argument is treated as
@@ -8892,6 +8900,31 @@ and, if no file is found, searches the directories in
 <code class="env">PATH</code>
 for the script.
 </p>
+<p>For example, the following command starts an interactive shell:
+</p>
+<div class="example">
+<pre class="example-preformatted">bash
+</pre></div>
+
+<p>whereas this command will read and execute commands from <samp class="file">filename</samp>:
+</p>
+<div class="example">
+<pre class="example-preformatted">bash filename
+</pre></div>
+
+<p>This command will execute &lsquo;<samp class="samp">echo hello</samp>&rsquo;:
+</p>
+<div class="example">
+<pre class="example-preformatted">bash -c 'echo hello'
+</pre></div>
+
+<p>and this will execute the same command
+read from the standard input:
+</p>
+<div class="example">
+<pre class="example-preformatted">echo echo hello | bash
+</pre></div>
+
 <hr>
 </div>
 <div class="section-level-extent" id="Bash-Startup-Files">
@@ -8904,7 +8937,7 @@ Next: <a href="#Interactive-Shells" accesskey="n" rel="next">Interactive Shells<
 
 <p>This section describes how Bash executes its startup files.
 If any of the files exist but cannot be read, Bash reports an error.
-Tildes are expanded in filenames as described above under
+Tildes in filenames are expanded as described above under
 Tilde Expansion (see <a class="pxref" href="#Tilde-Expansion">Tilde Expansion</a>).
 </p>
 <p>Interactive shells are described in <a class="ref" href="#Interactive-Shells">Interactive Shells</a>.
@@ -9000,15 +9033,16 @@ standard for startup files.
 In this mode, interactive shells expand the <code class="env">ENV</code> variable
 and read and execute commands from the file whose name is the
 expanded value.
-No other startup files are read.
+A posix-mode shell does not attempt to read any other startup files,
+even when invoked as a login shell.
 </p>
 <h4 class="subsubheading" id="Invoked-by-remote-shell-daemon"><span>Invoked by remote shell daemon<a class="copiable-link" href="#Invoked-by-remote-shell-daemon"> &para;</a></span></h4>
 
 <p>Bash
 attempts to determine when it is being run with its standard input
 connected to a network connection, as when executed by
-the historical and rarely-seen remote shell daemon, usually <code class="code">rshd</code>,
-or the secure shell daemon <code class="code">sshd</code>.
+the secure shell daemon <code class="code">sshd</code>.
+or the historical and rarely-seen remote shell daemon, usually <code class="code">rshd</code>.
 If
 Bash
 determines it is being run non-interactively in this fashion,
@@ -9023,7 +9057,7 @@ option inhibits this behavior, and the
 option makes Bash use a different file instead of
 <samp class="file">~/.bashrc</samp>,
 but neither
-<code class="code">rshd</code> nor <code class="code">sshd</code> generally invoke the shell with those
+<code class="command">sshd</code> nor <code class="command">rshd</code> generally invoke the shell with those
 options or allow them to be specified.
 </p>
 <h4 class="subsubheading" id="Invoked-with-unequal-effective-and-real-uid_002fgids"><span>Invoked with unequal effective and real <small class="sc">UID/GID</small>s<a class="copiable-link" href="#Invoked-with-unequal-effective-and-real-uid_002fgids"> &para;</a></span></h4>
@@ -9035,7 +9069,7 @@ the <code class="env">SHELLOPTS</code>, <code class="env">BASHOPTS</code>, <code
 variables, if they appear in the environment, are ignored, and the effective
 user id is set to the real user id.
 If the <samp class="option">-p</samp> option is supplied at invocation, the startup behavior is
-the same, but the effective user id is not reset.
+the same, but Bash does not reset the effective user id.
 </p>
 <hr>
 </div>
@@ -9671,7 +9705,7 @@ There is no maximum
 limit on the size of an array, nor any requirement that members
 be indexed or assigned contiguously.
 Indexed arrays are referenced using arithmetic expressions
-that must expand to an integer (see <a class="pxref" href="#Shell-Arithmetic">Shell Arithmetic</a>))
+that must expand to an integer (see <a class="pxref" href="#Shell-Arithmetic">Shell Arithmetic</a>)
 and are zero-based;
 associative arrays use arbitrary strings.
 Unless otherwise noted, indexed array indices must be non-negative integers.

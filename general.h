@@ -133,7 +133,7 @@ typedef struct {
 
 /* A macro to avoid making an unnecessary function call. */
 #define REVERSE_LIST(list, type) \
-  ((list && list->next) ? (type)list_reverse ((GENERIC_LIST *)list) \
+  ((list && list->next) ? (type)list_reverse ((void *)list) \
 			: (type)(list))
 
 #if __GNUC__ > 1

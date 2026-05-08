@@ -1,6 +1,6 @@
 /* stringlist.c - functions to handle a generic `list of strings' structure */
 
-/* Copyright (C) 2000-2019, 2022-2023 Free Software Foundation, Inc.
+/* Copyright (C) 2000-2019, 2022-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -253,7 +253,7 @@ strlist_from_word_list (WORD_LIST *list, int alloc, int starting_index, int *ip)
         *ip = 0;
       return ((STRINGLIST *)0);
     }
-  slen = list_length ((GENERIC_LIST *)list);
+  slen = wlist_length (list);
   ret = (STRINGLIST *)xmalloc (sizeof (STRINGLIST));
   ret->list = strvec_from_word_list (list, alloc, starting_index, &len);
   ret->list_size = slen + starting_index;

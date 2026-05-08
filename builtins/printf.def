@@ -1,7 +1,7 @@
 This file is printf.def, from which is created printf.c.
 It implements the builtin "printf" in Bash.
 
-Copyright (C) 1997-2025 Free Software Foundation, Inc.
+Copyright (C) 1997-2026 Free Software Foundation, Inc.
 
 This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -273,7 +273,7 @@ init_numarg ()
   size_t len;
   WORD_LIST *l;
 
-  len = list_length ((GENERIC_LIST *)orig_arglist);
+  len = wlist_length (orig_arglist);
   narg_argv = (char **)xmalloc ((len + 2) * sizeof (char *));	/* +2 because we don't use 0 */
 
   for (narg_argc = 1, l = orig_arglist; l; l = l->next)

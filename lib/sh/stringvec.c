@@ -1,6 +1,6 @@
 /* stringvec.c - functions for managing arrays of strings. */
 
-/* Copyright (C) 2000-2002,2022-2024 Free Software Foundation, Inc.
+/* Copyright (C) 2000-2002,2022-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -206,7 +206,7 @@ strvec_from_word_list (WORD_LIST *list, int alloc, int starting_index, int *ip)
   size_t count;
   char **array;
 
-  count = list_length ((GENERIC_LIST *)list);
+  count = wlist_length (list);
   array = (char **)xmalloc ((1 + count + starting_index) * sizeof (char *));
 
   for (count = 0; count < starting_index; count++)

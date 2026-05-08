@@ -1,6 +1,6 @@
 /* pcomplete.c - functions to generate lists of matches for programmable completion. */
 
-/* Copyright (C) 1999-2024 Free Software Foundation, Inc.
+/* Copyright (C) 1999-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -880,7 +880,7 @@ gen_wordlist_matches (COMPSPEC *cs, const char *text)
   l2 = expand_words_shellexp (l);
   dispose_words (l);
 
-  nw = list_length ((GENERIC_LIST *)l2);
+  nw = wlist_length (l2);
   sl = strlist_create (nw + 1);
 
   ntxt = bash_dequote_text (text);

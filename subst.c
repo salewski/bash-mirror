@@ -12836,7 +12836,7 @@ glob_expand_word_list (WORD_LIST *tlist, int eflags)
 
 	  if (glob_list)
 	    {
-	      output_list = (WORD_LIST *)list_append ((GENERIC_LIST *)glob_list, (GENERIC_LIST *)output_list);
+	      output_list = wlist_append (glob_list, output_list);
 	      PREPEND_LIST (tlist, disposables);
 	    }
 	  else if (fail_glob_expansion != 0)
@@ -13301,7 +13301,7 @@ shell_expand_word_list (WORD_LIST *tlist, int eflags)
 	}
 
       expanded = REVERSE_LIST (temp_list, WORD_LIST *);
-      new_list = (WORD_LIST *)list_append ((GENERIC_LIST *)expanded, (GENERIC_LIST *)new_list);
+      new_list = wlist_append (expanded, new_list);
     }
 
   if (orig_list)  

@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.23.0 -->
-<!-- CreationDate: Mon Mar 16 15:46:12 2026 -->
+<!-- CreationDate: Wed Apr 29 10:18:50 2026 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -458,11 +458,19 @@ determined by <i>isatty</i>(3)), or one started with the
 <b>i</b> if the shell is interactive, so a shell script or a
 startup file can test this state.</p>
 
+<p style="margin-left:9%; margin-top: 1em">A
+<i>non-interactive shell</i> is, not surprisingly, one that
+does not satisfy the tests for interactivity given above. A
+non-interactive shell is usually started to run commands
+from a script file supplied as an argument (a <i>shell
+script</i>) or from a string supplied with the
+<b>&minus;c</b> option.</p>
+
 <p style="margin-left:9%; margin-top: 1em">The following
 paragraphs describe how <b>bash</b> executes its startup
 files. If any of the files exist but cannot be read,
-<b>bash</b> reports an error. Tildes are expanded in
-filenames as described below under <b>Tilde Expansion</b> in
+<b>bash</b> reports an error. Tildes in filenames are
+expanded as described below under <b>Tilde Expansion</b> in
 the <b><small>EXPANSION</small></b> section.</p>
 
 <p style="margin-left:9%; margin-top: 1em">When <b>bash</b>
@@ -493,8 +501,7 @@ interactive shell that is not a login shell is started,
 <A HREF="file:~/.bashrc"><i>~/.bashrc</i></A>.</p>
 
 <p style="margin-left:9%; margin-top: 1em">When <b>bash</b>
-is started non-interactively, to run a shell script, for
-example, it looks for the variable
+is started non-interactively, it looks for the variable
 <b><small>BASH_ENV</small></b> in the environment, expands
 its value if it appears there, and uses the expanded value
 as the name of a file to read and execute. <b>Bash</b>
@@ -539,14 +546,15 @@ is started in posix mode, as with the
 the <small>POSIX</small> standard for startup files. In this
 mode, interactive shells expand the
 <b><small>ENV</small></b> variable and read and execute
-commands from the file whose name is the expanded value. No
-other startup files are read.</p>
+commands from the file whose name is the expanded value. A
+posix-mode shell does not attempt to read any other startup
+files, even when invoked as a login shell.</p>
 
 <p style="margin-left:9%; margin-top: 1em"><b>Bash</b>
 attempts to determine when it is being run with its standard
 input connected to a network connection, as when executed by
-the historical and rarely-seen remote shell daemon, usually
-<i>rshd</i>, or the secure shell daemon <i>sshd</i>. If
+the secure shell daemon <i>sshd</i> or the historical and
+rarely-seen remote shell daemon, usually <i>rshd</i>. If
 <b>bash</b> determines it is being run non-interactively in
 this fashion, it reads and executes commands from
 <A HREF="file:~/.bashrc"><i>~/.bashrc</i></A>, if that file exists and is readable.
@@ -554,7 +562,7 @@ this fashion, it reads and executes commands from
 The <b>&minus;&minus;norc</b> option inhibits this behavior,
 and the <b>&minus;&minus;rcfile</b> option makes <b>bash</b>
 use a different file instead of <A HREF="file:~/.bashrc"><i>~/.bashrc</i></A>, but
-neither <i>rshd</i> nor <i>sshd</i> generally invoke the
+neither <i>sshd</i> nor <i>rshd</i> generally invoke the
 shell with those options or allow them to be specified.</p>
 
 <p style="margin-left:9%; margin-top: 1em">If the shell is
@@ -567,8 +575,8 @@ inherited from the environment, the
 variables, if they appear in the environment, are ignored,
 and the effective user id is set to the real user id. If the
 <b>&minus;p</b> option is supplied at invocation, the
-startup behavior is the same, but the effective user id is
-not reset.</p>
+startup behavior is the same, but <b>bash</b> does not reset
+the effective user id.</p>
 
 <h2>DEFINITIONS
 <a name="DEFINITIONS"></a>

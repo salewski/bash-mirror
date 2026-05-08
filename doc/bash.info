@@ -1,9 +1,9 @@
 This is bash.info, produced by makeinfo version 7.2 from bashref.texi.
 
 This text is a brief description of the features that are present in the
-Bash shell (version 5.3, 16 March 2026).
+Bash shell (version 5.3, 29 April 2026).
 
-   This is Edition 5.3, last updated 16 March 2026, of ‘The GNU Bash
+   This is Edition 5.3, last updated 29 April 2026, of ‘The GNU Bash
 Reference Manual’, for ‘Bash’, Version 5.3.
 
    Copyright © 1988-2026 Free Software Foundation, Inc.
@@ -26,10 +26,10 @@ Bash Features
 *************
 
 This text is a brief description of the features that are present in the
-Bash shell (version 5.3, 16 March 2026).  The Bash home page is
+Bash shell (version 5.3, 29 April 2026).  The Bash home page is
 <http://www.gnu.org/software/bash/>.
 
-   This is Edition 5.3, last updated 16 March 2026, of ‘The GNU Bash
+   This is Edition 5.3, last updated 29 April 2026, of ‘The GNU Bash
 Reference Manual’, for ‘Bash’, Version 5.3.
 
    Bash contains features that appear in other popular shells, and some
@@ -3361,7 +3361,7 @@ File: bash.info,  Node: Shell Scripts,  Prev: Executing Commands,  Up: Basic She
 3.8 Shell Scripts
 =================
 
-A shell script is a text file containing shell commands.  When such a
+A “shell script” is a text file containing shell commands.  When such a
 file is used as the first non-option argument when invoking Bash, and
 neither the ‘-c’ nor ‘-s’ option is supplied (*note Invoking Bash::),
 Bash reads and executes commands from the file, then exits.  This mode
@@ -6666,6 +6666,12 @@ standard input and standard error are both connected to terminals (as
 determined by isatty(3)), or one started with the ‘-i’ option.  *Note
 Interactive Shells::, for more information.
 
+   A “non-interactive shell” is, not surprisingly, one that does not
+satisfy the tests for interactivity given above.  A non-interactive
+shell is usually started to run commands from a script file supplied as
+an argument (*note Shell Scripts::) or from a string supplied with the
+‘-c’ option.
+
    If arguments remain after option processing, and neither the ‘-c’ nor
 the ‘-s’ option has been supplied, the first argument is treated as the
 name of a file containing shell commands (*note Shell Scripts::).  When
@@ -6677,6 +6683,22 @@ If no commands are executed, the exit status is 0.  Bash first attempts
 to open the file in the current directory, and, if no file is found,
 searches the directories in ‘PATH’ for the script.
 
+   For example, the following command starts an interactive shell:
+
+     bash
+
+whereas this command will read and execute commands from ‘filename’:
+
+     bash filename
+
+This command will execute ‘echo hello’:
+
+     bash -c 'echo hello'
+
+and this will execute the same command read from the standard input:
+
+     echo echo hello | bash
+
 
 File: bash.info,  Node: Bash Startup Files,  Next: Interactive Shells,  Prev: Invoking Bash,  Up: Bash Features
 
@@ -6684,8 +6706,8 @@ File: bash.info,  Node: Bash Startup Files,  Next: Interactive Shells,  Prev: In
 ======================
 
 This section describes how Bash executes its startup files.  If any of
-the files exist but cannot be read, Bash reports an error.  Tildes are
-expanded in filenames as described above under Tilde Expansion (*note
+the files exist but cannot be read, Bash reports an error.  Tildes in
+filenames are expanded as described above under Tilde Expansion (*note
 Tilde Expansion::).
 
    Interactive shells are described in *note Interactive Shells::.
@@ -6763,21 +6785,22 @@ Invoked in POSIX mode
 When Bash is started in POSIX mode, as with the ‘--posix’ command line
 option, it follows the POSIX standard for startup files.  In this mode,
 interactive shells expand the ‘ENV’ variable and read and execute
-commands from the file whose name is the expanded value.  No other
-startup files are read.
+commands from the file whose name is the expanded value.  A posix-mode
+shell does not attempt to read any other startup files, even when
+invoked as a login shell.
 
 Invoked by remote shell daemon
 ..............................
 
 Bash attempts to determine when it is being run with its standard input
-connected to a network connection, as when executed by the historical
-and rarely-seen remote shell daemon, usually ‘rshd’, or the secure shell
-daemon ‘sshd’.  If Bash determines it is being run non-interactively in
+connected to a network connection, as when executed by the secure shell
+daemon ‘sshd’.  or the historical and rarely-seen remote shell daemon,
+usually ‘rshd’.  If Bash determines it is being run non-interactively in
 this fashion, it reads and executes commands from ‘~/.bashrc’, if that
 file exists and is readable.  Bash does not read this file if invoked as
 ‘sh’.  The ‘--norc’ option inhibits this behavior, and the ‘--rcfile’
 option makes Bash use a different file instead of ‘~/.bashrc’, but
-neither ‘rshd’ nor ‘sshd’ generally invoke the shell with those options
+neither ‘sshd’ nor ‘rshd’ generally invoke the shell with those options
 or allow them to be specified.
 
 Invoked with unequal effective and real UID/GIDs
@@ -6789,8 +6812,8 @@ files are read, shell functions are not inherited from the environment,
 the ‘SHELLOPTS’, ‘BASHOPTS’, ‘CDPATH’, and ‘GLOBIGNORE’ variables, if
 they appear in the environment, are ignored, and the effective user id
 is set to the real user id.  If the ‘-p’ option is supplied at
-invocation, the startup behavior is the same, but the effective user id
-is not reset.
+invocation, the startup behavior is the same, but Bash does not reset
+the effective user id.
 
 
 File: bash.info,  Node: Interactive Shells,  Next: Bash Conditional Expressions,  Prev: Bash Startup Files,  Up: Bash Features
@@ -13791,87 +13814,87 @@ Node: Environment140986
 Node: Exit Status142889
 Node: Signals144948
 Node: Shell Scripts149896
-Node: Shell Builtin Commands153194
-Node: Bourne Shell Builtins155535
-Node: Bash Builtins182254
-Node: Modifying Shell Behavior219989
-Node: The Set Builtin220331
-Node: The Shopt Builtin232325
-Node: Special Builtins249378
-Node: Shell Variables250367
-Node: Bourne Shell Variables250801
-Node: Bash Variables253309
-Node: Bash Features292593
-Node: Invoking Bash293607
-Node: Bash Startup Files300191
-Node: Interactive Shells305433
-Node: What is an Interactive Shell?305841
-Node: Is this Shell Interactive?306503
-Node: Interactive Shell Behavior307327
-Node: Bash Conditional Expressions311088
-Node: Shell Arithmetic316505
-Node: Aliases319832
-Node: Arrays322966
-Node: The Directory Stack330668
-Node: Directory Stack Builtins331465
-Node: Controlling the Prompt335910
-Node: The Restricted Shell338794
-Node: Bash POSIX Mode341887
-Node: Shell Compatibility Mode361703
-Node: Job Control370710
-Node: Job Control Basics371167
-Node: Job Control Builtins377535
-Node: Job Control Variables384323
-Node: Command Line Editing385554
-Node: Introduction and Notation387257
-Node: Readline Interaction389609
-Node: Readline Bare Essentials390797
-Node: Readline Movement Commands392605
-Node: Readline Killing Commands393601
-Node: Readline Arguments395624
-Node: Searching396714
-Node: Readline Init File398957
-Node: Readline Init File Syntax400260
-Node: Conditional Init Constructs427211
-Node: Sample Init File431596
-Node: Bindable Readline Commands434716
-Node: Commands For Moving436254
-Node: Commands For History438718
-Node: Commands For Text444109
-Node: Commands For Killing448234
-Node: Numeric Arguments451022
-Node: Commands For Completion452174
-Node: Keyboard Macros457870
-Node: Miscellaneous Commands458571
-Node: Readline vi Mode466114
-Node: Programmable Completion467091
-Node: Programmable Completion Builtins476827
-Node: A Programmable Completion Example488564
-Node: Using History Interactively493909
-Node: Bash History Facilities494590
-Node: Bash History Builtins498325
-Node: History Interaction505920
-Node: Event Designators510870
-Node: Word Designators512448
-Node: Modifiers514840
-Node: Installing Bash516777
-Node: Basic Installation517893
-Node: Compilers and Options521769
-Node: Compiling For Multiple Architectures522519
-Node: Installation Names524272
-Node: Specifying the System Type526506
-Node: Sharing Defaults527252
-Node: Operation Controls527966
-Node: Optional Features528985
-Node: Reporting Bugs541708
-Node: Major Differences From The Bourne Shell543065
-Node: GNU Free Documentation License564492
-Node: Indexes589669
-Node: Builtin Index590120
-Node: Reserved Word Index597218
-Node: Variable Index599663
-Node: Function Index617076
-Node: Concept Index631209
+Node: Shell Builtin Commands153200
+Node: Bourne Shell Builtins155541
+Node: Bash Builtins182260
+Node: Modifying Shell Behavior219995
+Node: The Set Builtin220337
+Node: The Shopt Builtin232331
+Node: Special Builtins249384
+Node: Shell Variables250373
+Node: Bourne Shell Variables250807
+Node: Bash Variables253315
+Node: Bash Features292599
+Node: Invoking Bash293613
+Node: Bash Startup Files300843
+Node: Interactive Shells306165
+Node: What is an Interactive Shell?306573
+Node: Is this Shell Interactive?307235
+Node: Interactive Shell Behavior308059
+Node: Bash Conditional Expressions311820
+Node: Shell Arithmetic317237
+Node: Aliases320564
+Node: Arrays323698
+Node: The Directory Stack331400
+Node: Directory Stack Builtins332197
+Node: Controlling the Prompt336642
+Node: The Restricted Shell339526
+Node: Bash POSIX Mode342619
+Node: Shell Compatibility Mode362435
+Node: Job Control371442
+Node: Job Control Basics371899
+Node: Job Control Builtins378267
+Node: Job Control Variables385055
+Node: Command Line Editing386286
+Node: Introduction and Notation387989
+Node: Readline Interaction390341
+Node: Readline Bare Essentials391529
+Node: Readline Movement Commands393337
+Node: Readline Killing Commands394333
+Node: Readline Arguments396356
+Node: Searching397446
+Node: Readline Init File399689
+Node: Readline Init File Syntax400992
+Node: Conditional Init Constructs427943
+Node: Sample Init File432328
+Node: Bindable Readline Commands435448
+Node: Commands For Moving436986
+Node: Commands For History439450
+Node: Commands For Text444841
+Node: Commands For Killing448966
+Node: Numeric Arguments451754
+Node: Commands For Completion452906
+Node: Keyboard Macros458602
+Node: Miscellaneous Commands459303
+Node: Readline vi Mode466846
+Node: Programmable Completion467823
+Node: Programmable Completion Builtins477559
+Node: A Programmable Completion Example489296
+Node: Using History Interactively494641
+Node: Bash History Facilities495322
+Node: Bash History Builtins499057
+Node: History Interaction506652
+Node: Event Designators511602
+Node: Word Designators513180
+Node: Modifiers515572
+Node: Installing Bash517509
+Node: Basic Installation518625
+Node: Compilers and Options522501
+Node: Compiling For Multiple Architectures523251
+Node: Installation Names525004
+Node: Specifying the System Type527238
+Node: Sharing Defaults527984
+Node: Operation Controls528698
+Node: Optional Features529717
+Node: Reporting Bugs542440
+Node: Major Differences From The Bourne Shell543797
+Node: GNU Free Documentation License565224
+Node: Indexes590401
+Node: Builtin Index590852
+Node: Reserved Word Index597950
+Node: Variable Index600395
+Node: Function Index617808
+Node: Concept Index631941
 
 End Tag Table
 

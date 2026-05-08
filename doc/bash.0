@@ -152,80 +152,86 @@ IINNVVOOCCAATTIIOONN
        includes ii if the shell is interactive, so a shell script or a  startup
        file can test this state.
 
-       The  following paragraphs describe how bbaasshh executes its startup files.
-       If any of the files exist but cannot be read, bbaasshh  reports  an  error.
-       Tildes  are expanded in filenames as described below under TTiillddee EExxppaann--
+       A _n_o_n_-_i_n_t_e_r_a_c_t_i_v_e _s_h_e_l_l is, not surprisingly, one that does not satisfy
+       the  tests  for  interactivity given above.  A non-interactive shell is
+       usually started to run commands from a script file supplied as an argu-
+       ment (a _s_h_e_l_l _s_c_r_i_p_t) or from a string supplied with the --cc option.
+
+       The following paragraphs describe how bbaasshh executes its startup  files.
+       If  any  of  the files exist but cannot be read, bbaasshh reports an error.
+       Tildes in filenames are expanded as described below under TTiillddee  EExxppaann--
        ssiioonn in the EEXXPPAANNSSIIOONN section.
 
-       When bbaasshh is invoked as an interactive login shell, or as a  non-inter-
-       active  shell with the ----llooggiinn option, it first reads and executes com-
-       mands from the file _/_e_t_c_/_p_r_o_f_i_l_e, if that file exists.   After  reading
+       When  bbaasshh is invoked as an interactive login shell, or as a non-inter-
+       active shell with the ----llooggiinn option, it first reads and executes  com-
+       mands  from  the file _/_e_t_c_/_p_r_o_f_i_l_e, if that file exists.  After reading
        that file, it looks for _~_/_._b_a_s_h___p_r_o_f_i_l_e, _~_/_._b_a_s_h___l_o_g_i_n, and _~_/_._p_r_o_f_i_l_e,
-       in  that order, and reads and executes commands from the first one that
-       exists and is readable.  The ----nnoopprrooffiillee option may be  used  when  the
+       in that order, and reads and executes commands from the first one  that
+       exists  and  is  readable.  The ----nnoopprrooffiillee option may be used when the
        shell is started to inhibit this behavior.
 
        When an interactive login shell exits, or a non-interactive login shell
-       executes  the  eexxiitt  builtin  command, bbaasshh reads and executes commands
+       executes the eexxiitt builtin command, bbaasshh  reads  and  executes  commands
        from the file _~_/_._b_a_s_h___l_o_g_o_u_t, if it exists.
 
-       When an interactive shell that is not a login shell  is  started,  bbaasshh
-       reads  and  executes commands from _~_/_._b_a_s_h_r_c, if that file exists.  The
-       ----nnoorrcc option inhibits this behavior.  The ----rrccffiillee _f_i_l_e option  causes
+       When  an  interactive  shell that is not a login shell is started, bbaasshh
+       reads and executes commands from _~_/_._b_a_s_h_r_c, if that file  exists.   The
+       ----nnoorrcc  option inhibits this behavior.  The ----rrccffiillee _f_i_l_e option causes
        bbaasshh to use _f_i_l_e instead of _~_/_._b_a_s_h_r_c.
 
-       When  bbaasshh is started non-interactively, to run a shell script, for ex-
-       ample, it looks for the variable BBAASSHH__EENNVV in the  environment,  expands
-       its  value if it appears there, and uses the expanded value as the name
-       of a file to read and execute.  BBaasshh behaves as if the  following  com-
-       mand were executed:
+       When bbaasshh is started  non-interactively,  it  looks  for  the  variable
+       BBAASSHH__EENNVV in the environment, expands its value if it appears there, and
+       uses  the  expanded  value  as  the name of a file to read and execute.
+       BBaasshh behaves as if the following command were executed:
 
               if [ -n "$BASH_ENV" ]; then . "$BASH_ENV"; fi
 
        but does not use the value of the PPAATTHH variable to search for the file-
        name.
 
-       If  bbaasshh is invoked with the name sshh, it tries to mimic the startup be-
-       havior of historical versions of sshh as closely as possible, while  con-
-       forming  to the POSIX standard as well.  When invoked as an interactive
-       login shell, or a non-interactive shell with  the  ----llooggiinn  option,  it
-       first  attempts  to  read  and  execute  commands from _/_e_t_c_/_p_r_o_f_i_l_e and
+       If bbaasshh is invoked with the name sshh, it tries to mimic the startup  be-
+       havior  of historical versions of sshh as closely as possible, while con-
+       forming to the POSIX standard as well.  When invoked as an  interactive
+       login  shell,  or  a  non-interactive shell with the ----llooggiinn option, it
+       first attempts to read  and  execute  commands  from  _/_e_t_c_/_p_r_o_f_i_l_e  and
        _~_/_._p_r_o_f_i_l_e, in that order.  The ----nnoopprrooffiillee option inhibits this behav-
        ior.  When invoked as an interactive shell with the name sshh, bbaasshh looks
-       for the variable EENNVV, expands its value if it is defined, and uses  the
-       expanded  value  as  the  name  of a file to read and execute.  Since a
-       shell invoked as sshh does not attempt to read and execute commands  from
-       any  other startup files, the ----rrccffiillee option has no effect.  A non-in-
-       teractive shell invoked with the name sshh does not attempt to  read  any
+       for  the variable EENNVV, expands its value if it is defined, and uses the
+       expanded value as the name of a file to  read  and  execute.   Since  a
+       shell  invoked as sshh does not attempt to read and execute commands from
+       any other startup files, the ----rrccffiillee option has no effect.  A  non-in-
+       teractive  shell  invoked with the name sshh does not attempt to read any
        other startup files.
 
-       When  invoked  as  sshh, bbaasshh enters posix mode after reading the startup
+       When invoked as sshh, bbaasshh enters posix mode after  reading  the  startup
        files.
 
-       When bbaasshh is started in posix mode, as with the  ----ppoossiixx  command  line
+       When  bbaasshh  is  started in posix mode, as with the ----ppoossiixx command line
        option, it follows the POSIX standard for startup files.  In this mode,
-       interactive  shells  expand  the EENNVV variable and read and execute com-
-       mands from the file whose name is the expanded value.  No other startup
-       files are read.
+       interactive shells expand the EENNVV variable and read  and  execute  com-
+       mands  from  the  file  whose name is the expanded value.  A posix-mode
+       shell does not attempt to read any other startup files, even  when  in-
+       voked as a login shell.
 
        BBaasshh attempts to determine when it is being run with its standard input
-       connected to a network connection, as when executed by  the  historical
-       and  rarely-seen remote shell daemon, usually _r_s_h_d, or the secure shell
-       daemon _s_s_h_d.  If bbaasshh determines it is being run  non-interactively  in
-       this  fashion,  it  reads and executes commands from _~_/_._b_a_s_h_r_c, if that
-       file exists and is readable.  BBaasshh does not read this file  if  invoked
-       as  sshh.  The ----nnoorrcc option inhibits this behavior, and the ----rrccffiillee op-
-       tion makes bbaasshh use a different file instead of _~_/_._b_a_s_h_r_c, but  neither
-       _r_s_h_d  nor  _s_s_h_d  generally invoke the shell with those options or allow
+       connected to a network connection, as when executed by the secure shell
+       daemon _s_s_h_d or the historical and rarely-seen remote shell daemon, usu-
+       ally  _r_s_h_d.   If  bbaasshh  determines it is being run non-interactively in
+       this fashion, it reads and executes commands from  _~_/_._b_a_s_h_r_c,  if  that
+       file  exists  and is readable.  BBaasshh does not read this file if invoked
+       as sshh.  The ----nnoorrcc option inhibits this behavior, and the ----rrccffiillee  op-
+       tion  makes bbaasshh use a different file instead of _~_/_._b_a_s_h_r_c, but neither
+       _s_s_h_d nor _r_s_h_d generally invoke the shell with those  options  or  allow
        them to be specified.
 
        If the shell is started with the effective user (group) id not equal to
        the real user (group) id, and the --pp option is not supplied, no startup
        files are read, shell functions are not inherited from the environment,
-       the SSHHEELLLLOOPPTTSS, BBAASSHHOOPPTTSS, CCDDPPAATTHH, and GGLLOOBBIIGGNNOORREE variables, if they  ap-
-       pear  in the environment, are ignored, and the effective user id is set
-       to the real user id.  If the --pp option is supplied at  invocation,  the
-       startup behavior is the same, but the effective user id is not reset.
+       the  SSHHEELLLLOOPPTTSS, BBAASSHHOOPPTTSS, CCDDPPAATTHH, and GGLLOOBBIIGGNNOORREE variables, if they ap-
+       pear in the environment, are ignored, and the effective user id is  set
+       to  the  real user id.  If the --pp option is supplied at invocation, the
+       startup behavior is the same, but bbaasshh does  not  reset  the  effective
+       user id.
 
 DDEEFFIINNIITTIIOONNSS
        The  following  definitions  are used throughout the rest of this docu-
@@ -7622,4 +7628,4 @@ BBUUGGSS
 
        Array variables may not (yet) be exported.
 
-GNU Bash 5.3                     2026 March 3                          _B_A_S_H(1)
+GNU Bash 5.3                     2026 April 29                         _B_A_S_H(1)

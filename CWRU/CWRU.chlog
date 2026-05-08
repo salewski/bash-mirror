@@ -12855,3 +12855,25 @@ subst.c
 	  old `quoted' is now (flags & W_QUOTED); changed all callers
 	  appropriately
 
+				    5/7
+				    ---
+list.c,externs.h
+	- list_reverse: change to use a void * scheme instead of GENERIC_LIST *
+	  scheme as a temporary fix for strict pointer aliasing issues
+	  Originally from Sam James <sam@gentoo.org>
+
+general.h
+	- REVERSE_LIST: change to use new void * argument scheme for now
+
+list.c,externs.h
+	- wlist_append,wlist_length: new WORD_LIST * specific versions of
+	  list_append and list_length, since all callers use WORD_LIST *
+	  arguments
+
+subst.c,pcomplete.c,execute_cmd.c,
+builtins/common.c,builtins/printf.def,
+lib/sh/stringvec.c,lib/sh/stringlist.c
+	- wlist_append,wlist_length: change callers to use new functions instead
+	  of list_append/list_length, since they're always called with
+	  WORD_LIST * arguments
+

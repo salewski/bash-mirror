@@ -5,7 +5,7 @@
 .\"	Case Western Reserve University
 .\"	chet.ramey@case.edu
 .\"
-.\"	Last Change: Tue Mar  3 10:52:34 EST 2026
+.\"	Last Change: Wed May  6 16:08:33 EDT 2026
 .\"
 .\" For bash_builtins, strip all but "SHELL BUILTIN COMMANDS" section
 .\" For rbash, strip all but "RESTRICTED SHELL" section
@@ -22,7 +22,7 @@
 .ds zX \" empty
 .if \n(zZ=1 .ig zZ
 .if \n(zY=1 .ig zY
-.TH BASH 1 "2026 March 3" "GNU Bash 5.3"
+.TH BASH 1 "2026 May 6" "GNU Bash 5.3"
 .\"
 .ie \n(.g \{\
 .ds ' \(aq
@@ -376,13 +376,21 @@ includes
 if the shell is interactive,
 so a shell script or a startup file can test this state.
 .PP
+A \fInon-interactive shell\fP is, not surprisingly, one that does not
+satisfy the tests for interactivity given above.
+A non-interactive shell is usually started to run commands from a script
+file supplied as an argument (a \fIshell script\fP)
+or from a string supplied with the
+.B \-c
+option.
+.PP
 The following paragraphs describe how
 .B bash
 executes its startup files.
 If any of the files exist but cannot be read,
 .B bash
 reports an error.
-Tildes are expanded in filenames as described below under
+Tildes in filenames are expanded as described below under
 .B "Tilde Expansion"
 in the
 .SM
@@ -429,7 +437,7 @@ to use \fIfile\fP instead of
 .PP
 When
 .B bash
-is started non-interactively, to run a shell script, for example, it
+is started non-interactively, it
 looks for the variable
 .SM
 .B BASH_ENV
@@ -504,13 +512,14 @@ In this mode, interactive shells expand the
 .B ENV
 variable and read and execute commands from the file
 whose name is the expanded value.
-No other startup files are read.
+A posix-mode shell does not attempt to read any other startup files,
+even when invoked as a login shell.
 .PP
 .B Bash
 attempts to determine when it is being run with its standard input
 connected to a network connection, as when executed by
-the historical and rarely-seen remote shell daemon, usually \fIrshd\fP,
-or the secure shell daemon \fIsshd\fP.
+the secure shell daemon \fIsshd\fP
+or the historical and rarely-seen remote shell daemon, usually \fIrshd\fP.
 If
 .B bash
 determines it is being run non-interactively in this fashion,
@@ -526,7 +535,7 @@ option inhibits this behavior, and the
 option makes \fBbash\fP use a different file instead of
 .FN \*~/.bashrc ,
 but neither
-\fIrshd\fP nor \fIsshd\fP generally invoke the shell with those options
+\fIsshd\fP nor \fIrshd\fP generally invoke the shell with those options
 or allow them to be specified.
 .PP
 If the shell is started with the effective user (group) id not equal to the
@@ -544,7 +553,7 @@ and
 variables, if they appear in the environment, are ignored,
 and the effective user id is set to the real user id.
 If the \fB\-p\fP option is supplied at invocation, the startup behavior is
-the same, but the effective user id is not reset.
+the same, but \fBbash\fP does not reset the effective user id.
 .SH DEFINITIONS
 The following definitions are used throughout the rest of this
 document.
@@ -5038,7 +5047,7 @@ all lines of the here-document are subjected to
 parameter expansion, command substitution, and arithmetic expansion,
 the character sequence
 .B \e<newline>
-is treated literally, and
+is treated as a line continuation, and
 .B \e
 must be used to quote the characters
 .BR \e ,

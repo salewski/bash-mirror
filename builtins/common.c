@@ -1,6 +1,6 @@
 /* common.c - utility functions for all builtins */
 
-/* Copyright (C) 1987-2024 Free Software Foundation, Inc.
+/* Copyright (C) 1987-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -384,7 +384,7 @@ remember_args (WORD_LIST *list, int destructive)
     {
       dispose_words (rest_of_args);
       rest_of_args = copy_word_list (list);
-      posparam_count += list_length ((GENERIC_LIST *)list);
+      posparam_count += wlist_length (list);
     }
 
   if (destructive)

@@ -155,10 +155,12 @@ extern int locale_decpoint (void);
 /* Declarations for functions defined in list.c. */
 extern void list_walk (GENERIC_LIST *, sh_glist_func_t *);
 extern void wlist_walk (WORD_LIST *, sh_icpfunc_t *);
-extern GENERIC_LIST *list_reverse (GENERIC_LIST *);
+extern void *list_reverse (void *);
 extern int list_length (GENERIC_LIST *);
+extern int wlist_length (WORD_LIST *);
 extern GENERIC_LIST *list_append (GENERIC_LIST *, GENERIC_LIST *);
-extern GENERIC_LIST *list_emove (GENERIC_LIST **, sh_gcp_func_t *, char *); /* unused */
+extern WORD_LIST *wlist_append (WORD_LIST *, WORD_LIST *);
+extern GENERIC_LIST *list_remove (GENERIC_LIST **, sh_gcp_func_t *, char *); /* unused */
 
 /* Declarations for functions defined in stringlib.c */
 extern int find_string_in_alist (char *, STRING_INT_ALIST *, int);
