@@ -5937,17 +5937,26 @@ execute_disk_command (WORD_LIST *words, REDIRECT *redirects, char *command_line,
 
   if (command)
     {
-      /* If we're optimizing out the fork (implicit `exec'), decrement the
-	 shell level like `exec' would do. Don't do this if we are already
-	 in a pipeline environment, assuming it's already been done. */
-      if (nofork && pipe_in == NO_PIPE && pipe_out == NO_PIPE && (subshell_environment & SUBSHELL_PIPE) == 0)
-	adjust_shell_level (-1);
-
 #if defined (STRICT_POSIX)
       if (posixly_correct == 0 || subst_assign_varlist == 0) /* Done below. */
 #endif
 	{
 	  maybe_make_export_env ();
+	  /* If we're optimizing out the fork (implicit `exec'), decrement the
+	     shell level like `exec' would do. Don't do this if we are already
+	     in a pipeline environment, assuming it's already been done.
+	     Since we've just (possibly) remade the export environment, it's
+	     marked as not dirty, so we update SHLVL in place rather than
+	     remake the whole thing again or force a remake we would not
+	     otherwise have to do. This mostly hits command substitutions with
+	     a lot of exported variables, since command_substitute already
+	     calls maybe_make_export_env (). */
+	  if (nofork && pipe_in == NO_PIPE && pipe_out == NO_PIPE && (subshell_environment & SUBSHELL_PIPE) == 0)
+	    {
+	      adjust_shell_level (-1);
+	      update_export_env_inplace ("SHLVL=", 6, get_string_value ("SHLVL"));
+	      array_needs_making = 0;
+	    }
 	  put_command_name_into_env (command);
 	}
     }
@@ -6035,6 +6044,13 @@ execute_disk_command (WORD_LIST *words, REDIRECT *redirects, char *command_line,
 	  expand_assignment_statements (command, 0);
 
 	  maybe_make_export_env ();
+	  /* See above for why we do this here. */
+	  if (nofork && pipe_in == NO_PIPE && pipe_out == NO_PIPE && (subshell_environment & SUBSHELL_PIPE) == 0)
+	    {
+	      adjust_shell_level (-1);
+	      update_export_env_inplace ("SHLVL=", 6, get_string_value ("SHLVL"));
+	      array_needs_making = 0;
+	    }
 	  put_command_name_into_env (command);
 	}
 #endif

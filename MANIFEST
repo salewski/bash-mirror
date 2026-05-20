@@ -1135,6 +1135,8 @@ tests/dollar-at-star8.sub	f
 tests/dollar-at-star9.sub	f
 tests/dollar-at-star10.sub	f
 tests/dollar-at-star11.sub	f
+tests/dollar-at-star12.sub	f
+tests/dollar-at-star13.sub	f
 tests/dollar-at1.sub	f
 tests/dollar-at2.sub	f
 tests/dollar-at3.sub	f

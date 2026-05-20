@@ -888,8 +888,8 @@ adjust_shell_level (int change)
       new_level[3] = '\0';
     }
 
-  temp_var = bind_variable ("SHLVL", new_level, 0);
-  set_auto_export (temp_var);
+  if (temp_var = bind_variable ("SHLVL", new_level, 0))
+    set_auto_export (temp_var);
 }
 
 static void
@@ -929,7 +929,8 @@ set_pwd (void)
       if (posixly_correct && current_dir)
 	{
 	  temp_var = bind_variable ("PWD", current_dir, 0);
-	  set_auto_export (temp_var);
+	  if (temp_var)
+	    set_auto_export (temp_var);
 	}  
       free (current_dir);
     }
@@ -938,7 +939,8 @@ set_pwd (void)
     {
       set_working_directory (home_string);
       temp_var = bind_variable ("PWD", home_string, 0);
-      set_auto_export (temp_var);
+      if (temp_var)
+	set_auto_export (temp_var);
     }
   else
     {
@@ -946,7 +948,8 @@ set_pwd (void)
       if (temp_string)
 	{
 	  temp_var = bind_variable ("PWD", temp_string, 0);
-	  set_auto_export (temp_var);
+	  if (temp_var)
+	    set_auto_export (temp_var);
 	  free (temp_string);
 	}
     }

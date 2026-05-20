@@ -130,6 +130,11 @@ extern char *string_list_dollar_star (WORD_LIST *, int, int);
 /* Expand $@ into a single string, obeying POSIX rules. */
 extern char *string_list_dollar_at (WORD_LIST *, int, int);
 
+/* A special function for expanding unquoted $* and $@ in a context where
+   word splitting will be performed using a non-whitespace separator and
+   the positional parameters potentially contain that separator. */
+extern char *string_list_dollar_atstar (WORD_LIST *, int, int);
+
 /* Turn the positional parameters into a string, understanding quoting and
    the various subtleties of using the first character of $IFS as the
    separator.  Calls string_list_dollar_at, string_list_dollar_star, and

@@ -1,0 +1,60 @@
+OIFS=$IFS
+
+set -- a b+ c +d e; IFS=+;
+
+# these should be the same
+printf '<%s> ' $1 $2 $3 $4 $5; echo
+printf '<%s> ' $* ; echo
+printf '<%s> ' $@ ; echo
+
+set -- 'b+' 'c'
+
+# these should be the same
+echo =====
+printf '<%s> ' $1 $2 $3; echo
+printf '<%s> ' $* ; echo
+printf '<%s> ' $@ ; echo
+printf '<%s> ' ${*} ; echo
+printf '<%s> ' ${@} ; echo
+
+# these should be the same
+echo =====
+set -- a 'b+c' '+d+e' 'f+g+' h
+
+printf '<%s> ' $* ; echo
+printf '<%s> ' $@ ; echo
+
+echo =====
+array=(a 'b+' c '+d' e)
+printf '<%s> ' ${array[0]} ${array[1]} ${array[2]} ${array[3]} ${array[4]}; echo
+printf '<%s> ' ${array[*]} ; echo
+printf '<%s> ' ${array[@]} ; echo
+unset array
+
+array=(a 'b+c' '+d+e' 'f+g+' h)
+printf '<%s> ' ${array[0]} ${array[1]} ${array[2]} ${array[3]} ${array[4]}; echo
+printf '<%s> ' ${array[*]} ; echo
+printf '<%s> ' ${array[@]} ; echo
+unset array
+
+echo =====
+set -- $'\001\177+' 'b+' c; IFS=+;
+
+recho $1 $2 $3
+recho $*
+
+set -- $'\177+' 'b+' c; IFS=+;
+recho $1 $2 $3
+recho $*
+
+set -- $'a\177+' 'b+' c; IFS=+;
+recho $1 $2 $3
+recho $*
+
+set -- $'\001+' b+ c; IFS=+;
+recho $1 $2 $3
+recho $*
+
+set -- $'a\001+' b+ c; IFS=+;
+recho $1 $2 $3
+recho $*

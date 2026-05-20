@@ -116,6 +116,8 @@ enum command_type { cm_for, cm_case, cm_while, cm_if, cm_simple, cm_select,
 #define PF_ALLINDS	0x40	/* array, act as if [@] was supplied */
 #define PF_BACKQUOTE	0x80	/* differentiate `` from $() for command_substitute */
 #define PF_COMSUBNLS	0x100	/* for ${; ...; } and read_comsub() to not strip trailing newlines */
+#define PF_STRINGEND	0x200	/* set if there are no chars following this expansion */
+#define PF_STRINGBEG	0x400	/* set if there are no chars before this expansion */
 
 /* Possible values for subshell_environment */
 #define SUBSHELL_ASYNC	0x01	/* subshell caused by `command &' */

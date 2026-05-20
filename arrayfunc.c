@@ -1581,6 +1581,10 @@ array_value_internal (const char *s, int quoted, int flags, array_eltstate_t *es
 	  retval = quote_nosplit (temp);
 	  free (temp);
 	}
+      else if (quoted == 0 && (flags & AV_ASSIGNRHS) == 0 &&
+	       ifs_is_set && ifs_is_null == 0 &&
+	       spctabnl (ifs_firstc[0]) == 0)
+	retval = string_list_dollar_atstar (l, quoted, 0);
       else	/* ${name[@]} or unquoted ${name[*]} */
 	retval = string_list_dollar_at (l, quoted, (flags & AV_ASSIGNRHS) ? PF_ASSIGNRHS : 0);
 

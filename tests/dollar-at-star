@@ -266,6 +266,11 @@ test_runsub ./dollar-at-star9.sub
 test_runsub ./dollar-at-star10.sub
 test_runsub ./dollar-at-star11.sub
 
+# tests for unquoted expansions of $* and $@ when word splitting will take
+# place and the separator is not whitespace
+test_runsub ./dollar-at-star12.sub
+test_runsub ./dollar-at-star13.sub
+
 # tests for special expansion of "$*" and "${array[*]}" when used with other
 # expansions -- bugs through bash-2.05b
 test_runsub ./dollar-star1.sub

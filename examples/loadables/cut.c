@@ -364,7 +364,7 @@ cutline (SHELL_VAR *v, arrayind_t ind, char *line, struct cutop *ops)
 static int
 cutfile (SHELL_VAR *v, WORD_LIST *list, struct cutop *ops)
 {
-  int fd, unbuffered_read, r;
+  int fd, unbuffered_read, r, closefd;
   char *line, *b;
   size_t llen;
   WORD_LIST *l;
@@ -378,11 +378,16 @@ cutfile (SHELL_VAR *v, WORD_LIST *list, struct cutop *ops)
   l = list;
   do
     {
+      closefd = 0;
+
       /* for each file */
       if (l == 0 || (l->word->word[0] == '-' && l->word->word[1] == '\0'))
 	fd = 0;
       else
-	fd = open (l->word->word, O_RDONLY);
+	{
+	  fd = open (l->word->word, O_RDONLY);
+	  closefd = fd != -1;
+	}
       if (fd < 0)
 	{
 	  file_error (l->word->word);
@@ -403,7 +408,8 @@ cutfile (SHELL_VAR *v, WORD_LIST *list, struct cutop *ops)
 	  r = cutline (v, ind, line, ops);	/* can modify line */
 	  ind += r;
 	}
-      if (fd > 0)
+
+      if (closefd)
 	close (fd);
 
       QUIT;

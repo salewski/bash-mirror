@@ -1,0 +1,41 @@
+# from back in 2018 on dash@vger.kernel.org
+
+# IFS the default, these arguments should not be split
+set -- , ,
+IFS=,
+recho $@
+recho $*
+recho ${@}
+recho ${*}
+
+set -- $@
+recho $#
+
+# IFS already set, these arguments should be split
+set -- , ,
+recho $@
+recho $*
+recho ${@}
+recho ${*}
+
+set -- $@
+recho $#
+
+# need the space to be preserved
+set -- , ' ,'
+IFS=,
+recho $@
+recho $*
+
+set -- $@
+recho $#
+
+# need the , to preserve an empty argument before the trailing char
+# from back in 2018 on dash@vger.kernel.org
+set -- ',' ','
+
+recho ${@}a
+recho ${*}b
+
+recho a${@}
+recho b${*}

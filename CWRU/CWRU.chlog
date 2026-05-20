@@ -12877,3 +12877,64 @@ lib/sh/stringvec.c,lib/sh/stringlist.c
 	  of list_append/list_length, since they're always called with
 	  WORD_LIST * arguments
 
+				    5/8
+				    ---
+command.h
+	- PF_STRINGEND,PF_STRINGBEG: new flags for the parameter expansion
+	  functions; set if there are no characters following or preceding the
+	  expansion, respectively
+
+subst.c
+	- string_list_dollar_atstar: new function, expands unquoted $* and $@
+	  when word splitting will take place and the separator is not
+	  whitespace, and the positional parameters can potentially contain
+	  the separator. It splits the positional parameters before separating
+	  them with the separator, taking care to handle null positional
+	  parameters and proper merging with text immediately preceding or
+	  following the expansion. Fixes bug that added a spurious empty
+	  argument if one of the positional parameters ended with the
+	  separator
+	- string_list_internal: take a new flag value that says to add an
+	  additional separator at the end of the returned string if the
+	  last word is a null word and it will be joined with text following
+	  the expansion
+	- string_list_pos_params: call string_list_dollar_atstar as
+	  appropriate
+	- list_string: take a new word flag: W_SPLITONLY. This means not to
+	  perform quoted null character removal while splitting the word
+	  and don't allow CTLESC to quote anything, and to return "" results
+	  of splitting verbatim, but marked as W_QUOTED to preserve null
+	  arguments
+	- expand_word_internal,param_expand: set PF_STRINGEND and PF_STRINGBEG
+	  appropriately
+	- word_split: pass W_SPLITONLY through to list_string()
+	These changes fix the bug with adding an extra empty word if one of
+	the positional parameters ends with the first character of $IFS and
+	it's not whitespace. Changes tests/dollar-at-star6.sub output.
+
+arrayfunc.c
+	- array_value_internal: if we have an unquoted array expansion
+	  subscripted with * or @, call string_list_dollar_atstar if
+	  appropriate
+
+				   5/13
+				   ----
+execute_cmd.c
+	- execute_disk_command: if we update SHLVL, do it after (maybe)
+	  making the export environment and then update the export env in
+	  place, so we don't have to rebuild it twice or rebuild it more
+	  times than necessary
+	  Report and fix from Gao Xiang <gaoxiang@kylinos.cn>
+
+				   5/14
+				   ----
+variables.c
+	- adjust_shell_level,set_pwd: make sure variable binding works before
+	  trying to set the variable as exported
+  	  Report and patch from Grisha Levit <grishalevit@gmail.com>
+
+subst.c
+	- function_substitute: make sure funsubs don't leave `-v' unset
+	  after they return by adding an unwind-protect function
+	  uw_restore_verbose()
+  	  Report and patch from Grisha Levit <grishalevit@gmail.com>

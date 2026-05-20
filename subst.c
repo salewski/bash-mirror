@@ -2875,6 +2875,9 @@ string_list_internal (WORD_LIST *list, char *sep, int flags)
       result_size += strlen (t->word->word);
     }
 
+  if (flags & 1)
+    result_size += sep_len;
+
   r = result = (char *)xmalloc (result_size + 1);
 
   for (t = list; t; t = t->next)
@@ -2893,6 +2896,20 @@ string_list_internal (WORD_LIST *list, char *sep, int flags)
       word_len = strlen (t->word->word);
       FASTCOPY (t->word->word, r, word_len);
       r += word_len;
+
+      /* FLAGS & 1 means to add an additional SEP to the end of the returned
+	 string if and only if the last word is a null word, since it will be
+	 joined with text following the expansion. */
+      if ((flags & 1) && t->next == 0 && (t->word->word == 0 || t->word->word[0] == '\0') && (t->word->flags & W_QUOTED))
+	{
+	  if (sep_len > 1)
+	    {
+	      FASTCOPY (sep, r, sep_len);
+	      r += sep_len;
+	    }
+	  else if (sep_len)
+	    *r++ = sep[0];
+	}
     }
 
   *r = '\0';
@@ -3071,6 +3088,107 @@ string_list_dollar_at (WORD_LIST *list, int quoted, int flags)
   return ret;
 }
 
+/* Expand $* or $@ in a context where word splitting will be performed. We
+   separate the words in LIST with the first character of IFS and assume
+   that a later split will recreate the list.
+   To avoid issues with a non-whitespace separator producing spurious empty
+   words if the last character of one of the words in LIST is that same
+   separator, we split LIST and join each resultant word with SEP. We remove
+   quoted nulls from the result because the callers expect them not to
+   be present before another word splitting pass.
+   This does not use FLAGS yet, but could. */
+char *
+string_list_dollar_atstar (WORD_LIST *list, int quoted, int flags)
+{
+  char *ret;
+  WORD_LIST *l, *l2, *tl;
+#if defined (HANDLE_MULTIBYTE)
+#  if defined (__GNUC__)
+  char sep[MB_CUR_MAX + 1];
+#  else
+  char *sep = 0;
+#  endif
+#else
+  char sep[2];
+#endif
+
+  if (list == 0)
+    return (NULL);
+
+#if defined (HANDLE_MULTIBYTE)
+#  if !defined (__GNUC__)
+  sep = (char *)xmalloc (locale_mb_cur_max + 1);
+#  endif /* !__GNUC__ */
+  if (ifs_firstc_len == 1)
+    {
+      sep[0] = ifs_firstc[0];
+      sep[1] = '\0';
+    }
+  else
+    {
+      memcpy (sep, ifs_firstc, ifs_firstc_len);
+      sep[ifs_firstc_len] = '\0';
+    }
+#else
+  sep[0] = ifs_firstc;
+  sep[1] = '\0';
+#endif
+
+  /* We want to split non-empty arguments, but preserve null arguments.
+     Preserving the null positional parameters and following them with SEP
+     is backwards compatible. */
+  /* If we want to remove (unquoted) null arguments, so $* is like $1 $2 ...,
+     then use PF_STRINGBEG and PF_STRINGEND to inhibit separators after the
+     first and last arguments so they are joined to whatever comes before
+     and after the $* and simply skip over them otherwise. */
+
+  /* Pre-process the list */
+  /* We arrange for null arguments to be preserved. */
+  for (l2 = tl = NULL, l = list; l; l = l->next)
+    {
+      char *new_string;
+      WORD_DESC *new_word;
+
+      new_word = copy_word (l->word);
+      new_word->flags |= W_SPLITONLY;
+      if (l->word->word[0] == '\0')
+	new_word->flags |= W_SAWQUOTEDNULL;
+
+      if (l2 == NULL)
+	l2 = tl = make_word_list (new_word, l2);
+      else
+	{
+	  tl->next = make_word_list (new_word, (WORD_LIST *)NULL);
+	  tl = tl->next;
+	}
+    }
+
+  /* XXX - this turns words that look like quoted nulls into "", which we
+     don't want here. */
+  l = word_list_split (l2);	/* pre-split, preserving empty arguments */
+
+  /* We want to turn words that are QUOTED_NULL with W_HASQUOTEDNULL set in
+     the word flags back into "" but leave every other $'\177' alone. */
+  for (l2 = l; l2; l2 = l2->next)
+    if (QUOTED_NULL (l2->word->word) && (l2->word->flags & W_HASQUOTEDNULL))
+      {
+	l2->word->word[0] = '\0';
+	l2->word->flags &= ~W_HASQUOTEDNULL;
+      }
+   
+  list_quote_escapes (l);
+  
+  ret = string_list_internal (l, sep, (flags & PF_STRINGEND) ? 1 : 0);
+#if defined (HANDLE_MULTIBYTE) && !defined (__GNUC__)
+  free (sep);
+#endif
+
+  dispose_words (l2);
+  dispose_words (l);
+
+  return ret;
+}
+
 /* Turn the positional parameters into a string, understanding quoting and
    the various subtleties of using the first character of $IFS as the
    separator.  Calls string_list_dollar_at, string_list_dollar_star, and
@@ -3100,6 +3218,14 @@ string_list_pos_params (int pchar, WORD_LIST *list, int quoted, int pflags)
     ret = expand_no_split_dollar_star ? string_list_dollar_star (list, quoted, 0) : string_list_dollar_at (list, quoted, 0);	/* Posix interp 888 */
   else if (pchar == '*' && quoted == 0 && (pflags & PF_ASSIGNRHS))	/* XXX */
     ret = expand_no_split_dollar_star ? string_list_dollar_star (list, quoted, 0) : string_list_dollar_at (list, quoted, 0);	/* Posix interp 888 */
+  else if (pchar == '*' && quoted == 0 && (pflags & PF_ASSIGNRHS) == 0 &&
+	   ifs_is_set && ifs_is_null == 0 &&
+#if defined (HANDLE_MULTIBYTE)
+	   spctabnl (ifs_firstc[0]) == 0)
+#else
+	   spctabnl (ifs_firstc) == 0)
+#endif
+    ret = string_list_dollar_atstar (list, quoted, 0);
   else if (pchar == '*')
     {
       /* Even when unquoted, string_list_dollar_star does the right thing
@@ -3123,14 +3249,16 @@ string_list_pos_params (int pchar, WORD_LIST *list, int quoted, int pflags)
        that quotes the escapes. We could use string_list_internal with " "
        as the second argument. */
     ret = string_list_dollar_at (list, quoted, pflags);	/* Posix interp 888 */
-  else if (pchar == '@')
-#if 0
-    /* XXX - param_expand uses string_list_dollar_at() for this case. */
-    /* string_list_dollar_at quotes CTLESC, even if quoted == 0 */
-    ret = string_list_dollar_at (list, quoted, 0);
+  else if (pchar == '@' && quoted == 0 && (pflags & PF_ASSIGNRHS) == 0 &&
+	   ifs_is_set && ifs_is_null == 0 &&
+#if defined (HANDLE_MULTIBYTE)
+	   spctabnl (ifs_firstc[0]) == 0)	/* separate these cases for now */
 #else
-    ret = string_list_dollar_star (list, quoted, 0);
+	   spctabnl (ifs_firstc) == 0)	/* separate these cases for now */
 #endif
+    ret = string_list_dollar_atstar (list, quoted, 0);
+  else if (pchar == '@')
+    ret = string_list_dollar_star (list, quoted, 0);
   else
     ret = string_list ((quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES)) ? quote_list (list) : list);
 
@@ -3202,6 +3330,9 @@ list_string (char *string, char *separators, int flags)
       else if (*s == CTLNUL) xflags |= SX_NOESCCTLNUL;
     }
 
+  if (flags & W_SPLITONLY)
+    xflags |= SX_NOCTLESC|SX_NOESCCTLNUL;
+
   slen = 0;
   /* Remove sequences of whitespace at the beginning of STRING, as
      long as those characters appear in IFS.  Do not do this if
@@ -3242,7 +3373,7 @@ list_string (char *string, char *separators, int flags)
 	 want to preserve the quoted null character iff this is a quoted
 	 empty string; otherwise the quoted null characters are removed
 	 below. */
-      if (QUOTED_NULL (current_word))
+      if ((flags & W_SPLITONLY) == 0 && QUOTED_NULL (current_word))
 	{
 	  t = alloc_word_desc ();
 	  t->word = make_quoted_char ('\0');
@@ -3253,7 +3384,8 @@ list_string (char *string, char *separators, int flags)
 	{
 	  /* If we have something, then add it regardless.  However,
 	     perform quoted null character removal on the current word. */
-	  remove_quoted_nulls (current_word);
+	  if ((flags & W_SPLITONLY) == 0)
+	    remove_quoted_nulls (current_word);
 
 	  /* We don't want to set the word flags based on the string contents
 	     here -- that's mostly for the parser -- so we just allocate a
@@ -3270,6 +3402,15 @@ list_string (char *string, char *separators, int flags)
 	     that we saw this for the caller to act on. */
 	  if (current_word == 0 || current_word[0] == '\0')
 	    result->word->flags |= W_SAWQUOTEDNULL;
+	}
+      else if ((flags & W_SPLITONLY) && current_word[0] == '\0')
+	{
+	  t = alloc_word_desc ();
+	  t->word = current_word;
+	  /* W_QUOTED for string_list_internal () */
+	  t->flags |= W_QUOTED|W_HASQUOTEDNULL;
+	  result = make_word_list (t, result);
+	  free_word = 0;
 	}
 
       /* If we're not doing sequences of separators in the traditional
@@ -7008,6 +7149,13 @@ uw_restore_errexit (void *eflag)
   set_shellopts ();
 }
 
+static void
+uw_restore_verbose (void *vflag)
+{
+  change_flag ('v', (intptr_t) vflag ? FLAG_ON : FLAG_OFF);
+  set_shellopts ();
+}
+
 /* Quote the output of nofork varsub command substitution in the way that the
    caller of function_substitute expects. The caller guarantees that STRING
    is non-null. This is equivalent to what read_comsub does to the output it
@@ -7146,7 +7294,8 @@ function_substitute (char *string, int quoted, int flags)
   push_context (lambdafunc.name, 1, temporary_env);		/* make local variables work */
   this_shell_function = &lambdafunc;
 
-  unwind_protect_int (verbose_flag);
+
+  add_unwind_protect (uw_restore_verbose, (void *) (intptr_t) verbose_flag);
   change_flag ('v', FLAG_OFF);
 
   /* When inherit_errexit option is not enabled, command substitution does
@@ -10821,6 +10970,20 @@ param_expand (char *string, size_t *sindex, int quoted,
 #  endif
 	    /* Posix interp 888: not RHS, no splitting, IFS set to '' */
 	    temp = string_list_dollar_star (list, quoted, 0);
+	  else if (expand_no_split_dollar_star == 0 && (pflags & PF_ASSIGNRHS) == 0 &&
+		   ifs_is_set && ifs_is_null == 0 &&
+#  if defined (HANDLE_MULTIBYTE)
+		   spctabnl (ifs_firstc[0]) == 0)
+#  else
+		   spctabnl (ifs_firstc) == 0)
+#  endif
+	    {
+	      int nflags;
+	      /* XXX - only if $# > 1? */
+	      nflags = (string[zindex+1] == '\0') ? PF_STRINGEND : 0;
+
+	      temp = string_list_dollar_atstar (list, quoted, nflags);
+	    }
 	  else
 	    {
 	      temp = string_list_dollar_at (list, quoted, 0);
@@ -10926,6 +11089,20 @@ param_expand (char *string, size_t *sindex, int quoted,
 	    temp = string_list_dollar_at (list, Q_DOUBLE_QUOTES, pflags);
 	  else
 	    temp = string_list_dollar_at (list, quoted, pflags);
+	}
+      else if (quoted == 0 &&
+	       ifs_is_set && ifs_is_null == 0 &&
+#if defined (HANDLE_MULTIBYTE)
+	       spctabnl (ifs_firstc[0]) == 0)
+#else
+	       spctabnl (ifs_firstc) == 0)
+#endif
+	{
+	  int nflags;
+	  /* XXX - only if $# > 1? */
+	  nflags = (string[zindex+1] == '\0') ? PF_STRINGEND : 0;
+
+	  temp = string_list_dollar_atstar (list, quoted, pflags|nflags);
 	}
       else
 	temp = string_list_dollar_at (list, quoted, pflags);
@@ -11520,6 +11697,8 @@ add_string:
 	  if (temp)
 	    {
 	      istring = sub_append_string (temp, istring, &istring_index, &istring_size);
+	      if (istring_index > 0)
+		pflags &= ~PF_STRINGBEG;
 	      temp = (char *)0;
 	    }
 
@@ -11694,6 +11873,8 @@ add_string:
 	    pflags |= PF_ASSIGNRHS;
 	  if (word->flags & W_COMPLETE)
 	    pflags |= PF_COMPLETE;
+	  if (istring_index == 0)
+	    pflags |= PF_STRINGBEG;
 
 	  tword = param_expand (string, &sindex, quoted, &local_expanded,
 			       &temp_has_dollar_at, &quoted_dollar_at,
@@ -12554,7 +12735,7 @@ word_split (WORD_DESC *w, char *ifs_chars)
       char *xifs;
 
       xifs = ((w->flags & W_QUOTED) || ifs_chars == 0) ? "" : ifs_chars;
-      result = list_string (w->word, xifs, w->flags & W_QUOTED);
+      result = list_string (w->word, xifs, w->flags & (W_QUOTED|W_SPLITONLY));
     }
   else
     result = (WORD_LIST *)NULL;
