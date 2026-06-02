@@ -1,6 +1,6 @@
 /* getopt.c - getopt for Bash.  Used by the getopt builtin. */
 
-/* Copyright (C) 1993-2009,2022 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2009,2022,2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -113,7 +113,8 @@ int sh_badopt = 0;
 int
 sh_getopt (int argc, char *const *argv, const char *optstring)
 {
-  char c, *temp;
+  char c;
+  const char *temp;
 
   sh_optarg = 0;
 

@@ -1,6 +1,6 @@
 /* utf8.c - UTF-8 character handling functions */
 
-/* Copyright (C) 2018, 2022 Free Software Foundation, Inc.
+/* Copyright (C) 2018, 2022, 2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -35,7 +35,7 @@ extern int locale_utf8locale;
 char *
 utf8_mbschr (const char *s, int c)
 {
-  return strchr (s, c);		/* for now */
+  return (char *)strchr (s, c);		/* for now */
 }
 
 int

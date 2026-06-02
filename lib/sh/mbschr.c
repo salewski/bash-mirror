@@ -1,6 +1,6 @@
 /* mbschr.c - strchr(3) that handles multibyte characters. */
 
-/* Copyright (C) 2002 Free Software Foundation, Inc.
+/* Copyright (C) 2002-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -81,5 +81,5 @@ mbschr (const char *s, int c)
     }
   else
 #endif
-  return (strchr (s, c));
+  return ((char *)strchr (s, c));
 }

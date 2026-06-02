@@ -12938,3 +12938,58 @@ subst.c
 	  after they return by adding an unwind-protect function
 	  uw_restore_verbose()
   	  Report and patch from Grisha Levit <grishalevit@gmail.com>
+
+				   5/18
+				   ----
+doc/bash.1,doc/bashref.texi
+	- note that PS0 and PS4 are not fed to readline, so they shouldn't
+	  contain the \[ and \] prompt escapes
+
+parse.y
+	- decode_prompt_string: if we're decoding a prompt string (is_prompt == 1),
+	  ignore \[ and \] unless the prompt is PS1 or PS2.
+	  Report from Egmont Koblinger <egmont@gmail.com>
+
+				   5/19
+				   ----
+lib/readline/display.c
+	- rl_redisplay: when deciding whether or not to reprint the prompt from
+	  column 0 because the cursor is before the last invisible character,
+	  use local_prompt_len to compute index into the buffer in a multibyte
+	  locale, since _rl_last_c_pos is a screen position. This still doesn't
+	  fix the eventual redisplay breakage if readline starts with the
+	  cursor somewhere other than column 0
+	  Fixes issue reported by Lennart Ackermans <lennart@ackermans.ch>
+
+				   5/20
+				   ----
+builtins/getopt.c
+examples/loadables/seq.c
+lib/sh/mbschr.c,lib/sh/utf8.c
+pathexp.c
+examples/loadables/seq.c
+	- fixes for `const' and gcc 15
+  	  Report and patch from Grisha Levit <grishalevit@gmail.com>
+
+				   5/21
+				   ----
+subst.c
+	- string_list_dollar_atstar: fix memory leak by calling dispose_words(l2)
+	  after the call to word_list_split(l2)
+  	  Report from Grisha Levit <grishalevit@gmail.com>
+
+				   5/22
+				   ----
+lib/readline/display.c
+	- _rl_redisplay_after_sigwinch: call _rl_reset_prompt every time, so
+	  the local_prompt_invis_chars array gets updated along with the
+	  local_prompt_newlines array
+	  Report and fix from Félix Bouynot <felix.bouynot@setenforce.one>
+
+				   5/25
+				   ----
+builtins/mapfile.def
+	- mapfile: the callback can leave the variable in an inconsistent
+	  state, or even unset it, so we use bind_array_variable to look it
+	  up again every time through the loop
+	  Report and patch from Philippe Grégoire <git@pgregoire.xyz>

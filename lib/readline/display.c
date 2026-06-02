@@ -1,6 +1,6 @@
 /* display.c -- readline redisplay facility. */
 
-/* Copyright (C) 1987-2025 Free Software Foundation, Inc.
+/* Copyright (C) 1987-2026 Free Software Foundation, Inc.
 
    This file is part of the GNU Readline Library (Readline), a library    
    for reading lines of text with interactive input and history editing.
@@ -1497,7 +1497,6 @@ rl_redisplay (void)
 	     the characters from the current cursor position.  But we
 	     only need to reprint it if the cursor is before the last
 	     invisible character in the prompt string. */
-	  /* XXX - why not use local_prompt_len? */
 	  nleft = prompt_visible_length + wrap_offset;
 	  if (cursor_linenum == prompt_last_screen_line)
 	    {
@@ -1509,11 +1508,7 @@ rl_redisplay (void)
 	         on the current screen line begins in the buffer. It is a
 	         buffer position, an index into curline
 	         (local_prompt + pmt_offset) */
-	      cursor_bufpos = pmt_offset;
-	      if (mb_cur_max == 1 || rl_byte_oriented)
-		cursor_bufpos += _rl_last_c_pos;
-	      else
-		cursor_bufpos += _rl_last_c_pos + curline_invchars;
+	      cursor_bufpos = pmt_offset + local_prompt_len;
 
 	      if (local_prompt && local_prompt_invis_chars[cursor_linenum] &&
 		    _rl_last_c_pos > 0 &&
@@ -3525,8 +3520,9 @@ _rl_redisplay_after_sigwinch (void)
   else
     rl_crlf ();
 
-  if (_rl_screenwidth < prompt_visible_length)
-    _rl_reset_prompt ();		/* update local_prompt_newlines array */
+  /* Let expand_prompt() update local_prompt_newlines and local_prompt_invis_chars
+    arrays */
+  _rl_reset_prompt ();
 
   /* Redraw only the last line of a multi-line prompt. */
   t = strrchr (rl_display_prompt, '\n');

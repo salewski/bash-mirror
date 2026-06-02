@@ -3167,6 +3167,8 @@ string_list_dollar_atstar (WORD_LIST *list, int quoted, int flags)
      don't want here. */
   l = word_list_split (l2);	/* pre-split, preserving empty arguments */
 
+  dispose_words (l2);
+
   /* We want to turn words that are QUOTED_NULL with W_HASQUOTEDNULL set in
      the word flags back into "" but leave every other $'\177' alone. */
   for (l2 = l; l2; l2 = l2->next)
@@ -3183,7 +3185,6 @@ string_list_dollar_atstar (WORD_LIST *list, int quoted, int flags)
   free (sep);
 #endif
 
-  dispose_words (l2);
   dispose_words (l);
 
   return ret;
@@ -8905,6 +8906,23 @@ get_var_and_type (char *varname, char *value, array_eltstate_t *estatep, int quo
 	  *valp = temp ? savestring (temp) : temp;
 	}
     }
+#if 0 /* TAG:bash-5.4 2026/05/11 YourLi@outlook.com */
+  /* For ksh93 compatibility, ${!ref} where ref is a non-special, nameref
+     variable, should expand to the value of ref, without resolving any
+     nameref chain. Previous versions treated an array variable without a
+     subscript the same as ref[0] (next clause). */
+  else if (shell_compatibility_level > 53 &&
+	   want_indir && value && vtype == VT_VARIABLE &&
+	   SPECIAL_VAR (varname, 1) == 0 &&
+	   (v = find_variable_noref (varname + 1)) &&
+	   nameref_p (v))
+    {
+      /* This is for compatibility with ksh93. */
+      vtype = VT_VARIABLE;
+      *varp = v;
+      *valp = savestring (value);
+    }
+#endif
   else if ((v = find_variable (vname)) && (invisible_p (v) == 0) && (assoc_p (v) || array_p (v)))
     {
       vtype = VT_ARRAYMEMBER;

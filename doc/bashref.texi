@@ -2997,7 +2997,8 @@ The evaluation is performed according to the rules listed below
 If the expression is invalid, Bash prints a message indicating
 failure to the standard error,
 does not perform the substitution,
-and does not execute the command associated with the expansion.
+and does not
+continue to execute the command in which the error occurs.
 
 @node Process Substitution
 @subsection Process Substitution
@@ -3015,7 +3016,9 @@ or
 >(@var{list})
 @end example
 @noindent
-The process @var{list} is run asynchronously, and its input or output 
+The process @var{list},
+as long as it is not a null command without redirections,
+is run asynchronously, and its input or output 
 appears as a filename.
 This filename is
 passed as an argument to the current command as the result of the
@@ -9154,8 +9157,11 @@ A backslash.
 Begin a sequence of non-printing characters.
 This could be used to
 embed a terminal control sequence into the prompt.
+This escape is only useful when the prompt will be supplied to
+Readline, so it shouldn't be used in @env{PS0} or @env{PS4}.
+
 @item \]
-End a sequence of non-printing characters.
+End a sequence of non-printing characters begun with @samp{\[}
 @end table
 
 The command number and the history number are usually different:

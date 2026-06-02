@@ -1,6 +1,6 @@
 /* pathexp.c -- The shell interface to the globbing library. */
 
-/* Copyright (C) 1995-2024 Free Software Foundation, Inc.
+/* Copyright (C) 1995-2024,2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -525,7 +525,7 @@ static int
 glob_name_is_acceptable (const char *name)
 {
   struct ign *p;
-  char *n;
+  const char *n;
   int flags;
 
   /* . and .. are never matched. We extend this to the terminal component of a

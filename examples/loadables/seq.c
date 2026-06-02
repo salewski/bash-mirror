@@ -1,5 +1,5 @@
 /* seq - print sequence of numbers to standard output.
-   Copyright (C) 2018-2022 Free Software Foundation, Inc.
+   Copyright (C) 2018-2026 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -171,7 +171,7 @@ static int
 getprec (const char *numbuf)
 {
   int p;
-  char *dp;
+  const char *dp;
 
   if (dp = strchr (numbuf, decimal_point))
     dp++;		/* skip over decimal point */

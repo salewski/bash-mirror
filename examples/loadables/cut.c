@@ -615,6 +615,8 @@ char *cut_doc[] = {
 	"processes to successive elements of ARRAY, beginning at 0. The",
 	"strings cut assigns to ARRAY are identical to the strings it would",
 	"write to the standard output if -a were not supplied.",
+	"",
+	"-s stops printing of lines not containing delimiters. -n is ignored.",
 	(char *)NULL
 };
 

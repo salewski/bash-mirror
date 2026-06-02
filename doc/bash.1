@@ -5,7 +5,7 @@
 .\"	Case Western Reserve University
 .\"	chet.ramey@case.edu
 .\"
-.\"	Last Change: Wed May  6 16:08:33 EDT 2026
+.\"	Last Change: Mon May 18 11:35:35 EDT 2026
 .\"
 .\" For bash_builtins, strip all but "SHELL BUILTIN COMMANDS" section
 .\" For rbash, strip all but "RESTRICTED SHELL" section
@@ -22,7 +22,7 @@
 .ds zX \" empty
 .if \n(zZ=1 .ig zZ
 .if \n(zY=1 .ig zY
-.TH BASH 1 "2026 May 6" "GNU Bash 5.3"
+.TH BASH 1 "2026 May 18" "GNU Bash 5.3"
 .\"
 .ie \n(.g \{\
 .ds ' \(aq
@@ -4328,7 +4328,8 @@ is invalid,
 .B bash
 prints a message to standard error indicating failure, 
 does not perform the substitution,
-and does not execute the command associated with the expansion.
+and does not
+continue to execute the command in which the error occurs.
 .SS Process Substitution
 \fIProcess substitution\fP allows a process's input or output to be
 referred to using a filename.
@@ -4336,7 +4337,9 @@ It takes the form of
 \fB<(\fP\fIlist\^\fP\fB)\fP
 or
 \fB>(\fP\fIlist\^\fP\fB)\fP.
-The process \fIlist\fP is run asynchronously, and its input or output
+The process \fIlist\fP,
+as long as it is not a null command without redirections,
+is run asynchronously, and its input or output
 appears as a filename.
 This filename is
 passed as an argument to the current command as the result of the
@@ -6628,9 +6631,12 @@ A backslash.
 .B \e[
 Begin a sequence of non-printing characters, which could be used to
 embed a terminal control sequence into the prompt.
+This escape is only useful when the prompt will be supplied to
+\fBreadline\fP, so it shouldn't be used in \fBPS0\fP or \fBPS4\fP.
 .TP
 .B \e]
-End a sequence of non-printing characters.
+End a sequence of non-printing characters begun with
+.BR \e[ .
 .PD
 .RE
 .PP

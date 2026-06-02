@@ -6632,7 +6632,7 @@ decode_prompt_string (char *string, int is_prompt)
 #if defined (READLINE)
 	    case '[':
 	    case ']':
-	      if (no_line_editing)
+	      if (no_line_editing || (is_prompt && decoding_prompt != ps1_prompt && decoding_prompt != ps2_prompt))
 		{
 		  string++;
 		  break;
