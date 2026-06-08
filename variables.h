@@ -1,6 +1,6 @@
 /* variables.h -- data structures for shell variables. */
 
-/* Copyright (C) 1987-2025 Free Software Foundation, Inc.
+/* Copyright (C) 1987-2026 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -388,6 +388,7 @@ extern void push_source (ARRAY *, char *);
 
 extern void adjust_shell_level (int);
 extern void non_unsettable (char *);
+extern void dispose_variable_value (SHELL_VAR *);
 extern void dispose_variable (SHELL_VAR *);
 extern void dispose_used_env_vars (void);
 extern void dispose_function_env (void);

@@ -459,18 +459,42 @@ Q= <a b c> <a:b:c>
  Q+ <a b c> <a:b:c>
 +Q+ <a b c> <a:b:c>
 !Q: <a b c> <a:b:c>
-Q: <a:b:c> <a:b:c>
+Q: <a b c> <a:b:c>
 !Q# <a b c> <a:b:c>
-Q# <a:b:c> <a:b:c>
+Q# <a b c> <a:b:c>
 !Q% <a b c> <a:b:c>
-Q% <a:b:c> <a:b:c>
+Q% <a b c> <a:b:c>
 !Q/ <x x x> <x:x:x>
-Q/ <x:x:x> <x:x:x>
+Q/ <x x x> <x:x:x>
 !Q^ <A B C> <A:B:C>
-Q^ <A:B:C> <A:B:C>
+Q^ <A B C> <A:B:C>
 !Q, <a b c> <a:b:c>
-Q, <a:b:c> <a:b:c>
+Q, <a b c> <a:b:c>
 !Q@Q <'a' 'b' 'c'> <'a':'b':'c'>
-Q@Q <'a':'b':'c'> <'a':'b':'c'>
+Q@Q <'a' 'b' 'c'> <'a':'b':'c'>
 !Q@A <set -- 'a':'b':'c'> <set -- 'a':'b':'c'>
 Q@A <set -- 'a':'b':'c'> <set -- 'a':'b':'c'>
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="0:1"
+declare -- b="0:1"
+declare -- b="0 1"
+declare -- b="0 1"
+declare -- b="01"
+declare -- b="01"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="a:b"
+declare -- b="a:b"
+declare -- b="a b"
+declare -- b="a b"
+declare -- b="ab"
+declare -- b="ab"

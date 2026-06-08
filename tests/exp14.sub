@@ -67,3 +67,34 @@ IFS=:; o="${@@Q}" s="${*@Q}"; printf 'Q@Q <%s> <%s>\n' "$o" "$s" ; IFS=$OIFS
 # positional parameter transformation -- assignment
 IFS=:; o=${@@A} s=${*@A}; printf '!Q@A <%s> <%s>\n' "$o" "$s" ; IFS=$OIFS
 IFS=:; o="${@@A}" s="${*@A}"; printf 'Q@A <%s> <%s>\n' "$o" "$s" ; IFS=$OIFS
+
+# direct and indirect (prefix) array expansions
+IFS=' ' a=(a b) b=${!a[@]}  ; declare -p b
+IFS=' ' a=(a b) b="${!a[@]}"; declare -p b
+IFS=' ' a=(a b) b=${!a[*]}  ; declare -p b
+IFS=' ' a=(a b) b="${!a[*]}"; declare -p b
+
+IFS=':' a=(a b) b=${!a[@]}  ; declare -p b
+IFS=':' a=(a b) b="${!a[@]}"; declare -p b
+IFS=':' a=(a b) b=${!a[*]}  ; declare -p b
+IFS=':' a=(a b) b="${!a[*]}"; declare -p b
+
+IFS=''  a=(a b) b=${!a[@]}  ; declare -p b
+IFS=''  a=(a b) b="${!a[@]}"; declare -p b
+IFS=''  a=(a b) b=${!a[*]}  ; declare -p b
+IFS=''  a=(a b) b="${!a[*]}"; declare -p b
+
+IFS=' ' a=(a b) b=${a[@]}  ; declare -p b
+IFS=' ' a=(a b) b="${a[@]}"; declare -p b
+IFS=' ' a=(a b) b=${a[*]}  ; declare -p b
+IFS=' ' a=(a b) b="${a[*]}"; declare -p b
+
+IFS=':' a=(a b) b=${a[@]}  ; declare -p b
+IFS=':' a=(a b) b="${a[@]}"; declare -p b
+IFS=':' a=(a b) b=${a[*]}  ; declare -p b
+IFS=':' a=(a b) b="${a[*]}"; declare -p b
+
+IFS=''  a=(a b) b=${a[@]}  ; declare -p b
+IFS=''  a=(a b) b="${a[@]}"; declare -p b
+IFS=''  a=(a b) b=${a[*]}  ; declare -p b
+IFS=''  a=(a b) b="${a[*]}"; declare -p b

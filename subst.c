@@ -3234,6 +3234,15 @@ string_list_pos_params (int pchar, WORD_LIST *list, int quoted, int pflags)
 	 separator. */
       ret = string_list_dollar_star (list, quoted, 0);
     }
+  else if (pchar == '@' && (pflags & PF_ASSIGNRHS))
+    /* XXX - param_expand uses quoted|Q_DOUBLE_QUOTES for this case, but
+       that quotes the escapes. We could use string_list_internal with " "
+       as the second argument. */
+    /* This makes $@ on the rhs of an assignment statement behave the
+       same quoted as unquoted (each argument separated by a space instead
+       of the first character of IFS), whether or not the expansion is
+       standalone ($@) or part of a different word expansion. */
+    ret = string_list_dollar_at (list, quoted, pflags);	/* Posix interp 888 */
   else if (pchar == '@' && (quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES)))
     /* We use string_list_dollar_at, but only if the string is quoted, since
        that quotes the escapes if it's not, which we don't want.  We could
@@ -3245,11 +3254,6 @@ string_list_pos_params (int pchar, WORD_LIST *list, int quoted, int pflags)
     ret = string_list_dollar_at (list, quoted, 0);
   else if (pchar == '@' && quoted == 0 && ifs_is_null)	/* XXX */
     ret = string_list_dollar_at (list, quoted, 0);	/* Posix interp 888 */
-  else if (pchar == '@' && quoted == 0 && (pflags & PF_ASSIGNRHS))
-    /* XXX - param_expand uses quoted|Q_DOUBLE_QUOTES for this case, but
-       that quotes the escapes. We could use string_list_internal with " "
-       as the second argument. */
-    ret = string_list_dollar_at (list, quoted, pflags);	/* Posix interp 888 */
   else if (pchar == '@' && quoted == 0 && (pflags & PF_ASSIGNRHS) == 0 &&
 	   ifs_is_set && ifs_is_null == 0 &&
 #if defined (HANDLE_MULTIBYTE)

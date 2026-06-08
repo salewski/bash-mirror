@@ -33,8 +33,8 @@ declare: usage: declare [-aAfFgiIlnrtux] [name[=value] ...] or declare -p [-aAfF
 ./errors.tests: line 115: exec: -i: invalid option
 exec: usage: exec [-cl] [-a name] [command [argument ...]] [redirection ...]
 ./errors.tests: line 122: export: XPATH: not a function
-./errors.tests: line 125: break: only meaningful in a `for', `while', or `until' loop
-./errors.tests: line 126: continue: only meaningful in a `for', `while', or `until' loop
+./errors.tests: line 125: break: only meaningful in a `for', `while', `until', or `select' loop
+./errors.tests: line 126: continue: only meaningful in a `for', `while', `until', or `select' loop
 ./errors.tests: line 129: shift: label: numeric argument required
 ./errors.tests: line 134: shift: too many arguments
 ./errors.tests: line 140: let: expression expected

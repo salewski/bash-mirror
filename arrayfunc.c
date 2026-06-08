@@ -69,7 +69,7 @@ const char * const bash_badsub_errmsg = N_("bad array subscript");
 /* **************************************************************** */
 
 /* Convert a shell variable to an array variable.  The original value is
-   saved as array[0]. */
+   saved as array[0] if the variable is not already an array. */
 SHELL_VAR *
 convert_var_to_array (SHELL_VAR *var)
 {
@@ -78,10 +78,10 @@ convert_var_to_array (SHELL_VAR *var)
 
   oldval = value_cell (var);
   array = array_create ();
-  if (oldval)
+  if (oldval && array_p (var) == 0 && assoc_p (var) == 0)
     array_insert (array, 0, oldval);
 
-  FREE (value_cell (var));
+  dispose_variable_value (var);
   var_setarray (var, array);
 
   /* these aren't valid anymore */
@@ -110,8 +110,9 @@ convert_var_to_array (SHELL_VAR *var)
   return var;
 }
 
-/* Convert a shell variable to an array variable.  The original value is
-   saved as array[0]. */
+/* Convert a shell variable to an associative array variable.
+   The original value is saved as array[0] if the variable is not already
+   an array. */
 SHELL_VAR *
 convert_var_to_assoc (SHELL_VAR *var)
 {
@@ -120,10 +121,10 @@ convert_var_to_assoc (SHELL_VAR *var)
 
   oldval = value_cell (var);
   hash = assoc_create (0);
-  if (oldval)
+  if (oldval && array_p (var) == 0 && assoc_p (var) == 0)
     assoc_insert (hash, savestring ("0"), oldval);
 
-  FREE (value_cell (var));
+  dispose_variable_value (var);
   var_setassoc (var, hash);
 
   /* these aren't valid anymore */

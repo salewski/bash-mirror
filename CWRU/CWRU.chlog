@@ -12993,3 +12993,37 @@ builtins/mapfile.def
 	  state, or even unset it, so we use bind_array_variable to look it
 	  up again every time through the loop
 	  Report and patch from Philippe Grégoire <git@pgregoire.xyz>
+
+				   5/29
+				   ----
+subst.c
+	- string_list_pos_params: make $@ on the rhs of an assignment
+	  statement (quoted or unquoted) behave consistently whether it's a
+	  `standalone' expansion or part of a different word expansion
+	  (e.g., ${@} vs. ${@:1}). This expands consistently to the
+	  positional parameters separated by a space instead of using the
+	  first character of IFS when the expansion is quoted (like "$*").
+	  Report and fix from Emanuele Torre <torreemanuele6@gmail.com>
+
+				    6/1
+				    ---
+builtins/break.def
+	- check_loop_level: if SELECT_COMMAND is defined, add `select' to
+	  the no-loop error message
+	  Report from Keith Thompson <Keith.S.Thompson@gmail.com>
+
+				    6/4
+				    ---
+builtins/mapfile.def
+	- mapfile: only call bind_array_variable if we actually run the
+	  callback; use the old method of calling bind_array_element
+	  otherwise
+  	  Report and patch from Grisha Levit <grishalevit@gmail.com>
+
+variables.c, variables.h
+	- dispose_variable_value is now a public function
+
+arrayfunc.c
+	- convert_var_to_{array,assoc}: only save the old value if the variable
+	  isn't an array; dispose old value appropriately
+  	  Report and patch from Grisha Levit <grishalevit@gmail.com>

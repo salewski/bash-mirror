@@ -287,7 +287,6 @@ static SHELL_VAR *bind_variable_internal (const char *, const char *, HASH_TABLE
 static void init_variable (SHELL_VAR *);
 static void init_shell_variable (SHELL_VAR *);
 
-static void dispose_variable_value (SHELL_VAR *);
 static void free_variable_hash_data (PTR_T);
 
 static VARLIST *vlist_alloc (size_t);
@@ -3744,7 +3743,7 @@ copy_variable (SHELL_VAR *var)
 /* **************************************************************** */
 
 /* Dispose of the information attached to VAR. */
-static void
+void
 dispose_variable_value (SHELL_VAR *var)
 {
   if (nofree_p (var))

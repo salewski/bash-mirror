@@ -9158,7 +9158,8 @@ Begin a sequence of non-printing characters.
 This could be used to
 embed a terminal control sequence into the prompt.
 This escape is only useful when the prompt will be supplied to
-Readline, so it shouldn't be used in @env{PS0} or @env{PS4}.
+Readline, so it shouldn't be used in @env{PS0} or @env{PS4},
+or when line editing is not enabled.
 
 @item \]
 End a sequence of non-printing characters begun with @samp{\[}
